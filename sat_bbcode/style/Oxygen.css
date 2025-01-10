@@ -1,0 +1,346 @@
+@font-face {
+  font-family: 'Awesome';
+  font-display: block;
+  src: url("font/fa-solid-900.eot");
+  src: url("font/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("font/fa-solid-900.woff2") format("woff2"), url("font/fa-solid-900.woff") format("woff"), url("font/fa-solid-900.ttf") format("truetype"); }
+
+fieldset {
+    min-inline-size: auto;
+}
+
+#post-form .options,
+#brd-qpost .options,
+#post-form .txt-set label,
+#brd-qpost .txt-set label {
+    display: none;
+}
+
+#post-form .txt-set,
+#brd-qpost .txt-set,
+#post-form .txt-set .fld-input,
+#brd-qpost .txt-set .fld-input,
+#post-form .mf-set {
+    padding: 0;
+}
+
+#post-form .frm-buttons,
+#brd-qpost .frm-buttons {
+    padding: .8em 0 0;
+}
+
+#post-form .sf-set .fld-input {
+    padding: .5em 0 .5em 1%;
+    max-width: calc(100% - .25em);
+}
+
+#post-form .sf-set input {
+    width: calc(100% - .5em);
+}
+
+#post-form .txt-set textarea,
+#brd-qpost .txt-set textarea {
+    width: 99%;
+}
+
+#post-form .frm-group,
+#brd-qpost .frm-group {
+    position: relative;
+    margin: .5em 1.417em;
+}
+
+#pun_bbcode_bar {
+    margin-top: .5em;
+}
+
+#pun_bbcode_buttons {
+    display: -webkit-flex;
+    display: flex;
+}
+
+#pun_bbcode_buttons .butgroup {
+    display: contents;
+//    display: inline-block;
+    padding-left: 3px;
+    margin: 0 6px 6px 0;
+    border-left: double 3px #ccc;
+}
+
+#pun_bbcode_buttons input[type="button"],
+.bbcont p input[type="button"] {
+    width: 30px;
+    height: 30px;
+    margin: 1px;
+    padding: 0;
+    font-family: 'Awesome';
+    font-size: 16px;
+    line-height: 28px;
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+@media screen and (max-width: 760px) {
+  #pun_bbcode_buttons {
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+  #pun_bbcode_buttons input[type="button"],
+  .bbcont p input[type="button"] {
+    -webkit-flex: none;
+    flex: none;
+  }
+}
+
+.bbcont > p {
+    display: inline-block;
+    text-align: center;
+    margin: 0 1em;
+}
+
+.bbcont br {
+    display: inline;
+}
+
+.sizelist p {
+    cursor: pointer;
+    min-height: 20px;
+    display: inline-block;
+    width: 120px;
+}
+
+.fontlist span {
+    cursor: pointer;
+    min-height: 20px;
+    min-width: 10em;
+    padding: .35em .5em;
+    display: inline-block;
+}
+
+.bbcont .entry-content {
+    min-height: auto;
+}
+
+.bbcont .firstletter {
+    color: red;
+    font-weight: bold;
+}
+
+#pun_bbcode_buttons input:hover {
+    color: #00579c;
+}
+
+#bbconts > div {
+    position: absolute;
+    z-index: 1;
+    right: .5em;
+    max-width: 75%;
+    max-height: none;
+    margin: 1em 0 0;
+    background-color: #fbfbfb;
+    border: 1px solid #d3dae1;
+}
+
+@media screen and (max-width: 600px) {
+  #bbconts > div {
+    right: 1px;
+    max-width: 98%;
+  }
+}
+
+#bbcode_size {
+    width: 630px;
+}
+
+#bbcode_smile {
+    width: 450px;
+}
+
+#bbconts > div div:not(.bbpanel-subhead) {
+    padding: .5em;
+}
+
+.bbpanel-subhead {
+    padding: .1em 1.417em;
+    border-style: solid;
+    border-width: 0 0 1px;
+    border-color: #d3dae1 #D3DAE1 #cbd1d8 #D3DAE1;
+    background: #f4f4f4;
+}
+
+.palette {
+    text-align: center;
+    line-height: 12px;
+}
+
+.palette .colbut {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.fontlist {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+
+#bbcode_smile .tabs {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+}
+
+#bbcode_smile .tabs .active a {
+    text-decoration: underline;
+}
+
+#bbcode_smile .bbcont div {
+    display: none;
+    text-align: justify;
+    max-height: 195px;
+    overflow: auto;
+}
+
+#bbcode_smile .bbcont div.active {
+    display: block;
+}
+
+#bbcode_smile .bbcont div img {
+    cursor: pointer;
+}
+
+.entry-content hr,
+.entry-content .hr {
+    display: block;
+    margin: .5em 0;
+    height: 0;
+    overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+    border-color: #dde4eb;
+}
+
+.entry-content code {
+    word-wrap: unset;
+    white-space: pre;
+}
+
+.codebox h5 {
+    cursor: pointer;
+}
+
+.codebox pre {
+    counter-reset: codenum;
+    overflow: auto;
+    max-height: 13em;
+}
+.codebox pre code:before {
+    counter-increment: codenum;
+    content: counter(codenum) '\202F';
+    background-color: #f1f1f1;
+}
+
+.codebox h5 {
+    cursor: pointer;
+    margin-bottom: 0.5em;
+}
+
+.spoilerbox > blockquote {
+    display: none;
+}
+
+.spoilerbox blockquote.visible {
+    display: block;
+    padding-top: 1em;
+}
+
+.spoiler-caption {
+    cursor: pointer;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.spoiler-caption::before {
+    content: '\f0fe';
+    font-family: 'Awesome';
+    padding-right: .5em;
+}
+
+.spoiler-caption.visible::before {
+    content: '\f146';
+}
+
+.hidebox cite {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    color: silver;
+    font-size: .8em;
+}
+
+.hidebox cite::before {
+    content: '\f023';
+    font-family: 'Awesome';
+    padding-right: .5em;
+    color: #222;
+}
+
+.hidebox.unlock cite::before {
+    content: '\f3c1';
+}
+
+abbr {
+    cursor: help;
+}
+
+abbr::after {
+    content: '\f069';
+    font-family: 'Awesome';
+    vertical-align: super;
+    font-size: .5em;
+}
+
+.showttl {
+    position: absolute;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-style: solid;
+    border-width: 1px;
+    padding: 0.3em 0.7em;
+    -webkit-box-shadow: 1px 1px 2px #222;
+    -moz-box-shadow: 1px 1px 2px #222;
+    box-shadow: 1px 1px 2px #222;
+    z-index: 1;
+}
+
+.entry-content {
+    overflow: visible;
+    position: relative;
+}
+
+.you {
+    font-weight: bold;
+    color: mediumblue;
+}
+
+.bbu {
+    text-decoration: underline;
+}
+
+del {
+    text-decoration: line-through;
+}

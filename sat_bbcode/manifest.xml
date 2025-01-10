@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>sat_bbcode</id>
+	<title>Sat BBcode</title>
+	<version>0.1.5</version>
+	<description>(sat_bbcode) - Adds a BB code panel to the response form</description>
+	<author>satsana</author>
+	
+	<minversion>1.4.4</minversion>
+	<maxtestedon>1.4.6</maxtestedon>
+
+	<dependencies>
+		<dependency>pun_jquery</dependency>
+	</dependencies>
+
+	<hooks>
+
+		<hook id="hd_head"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+
+$forum_loader->add_js($ext_info['url'].'/js/pun_bbcode.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+$forum_loader->add_js($ext_info['url'].'/js/sat_bbcode.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+
+if(!defined('SAT_BBCODE_OPT_LOADED')) require $ext_info['path'].'/options.php';
+
+$forum_loader->add_js("PUNBB.urlconf = '".$lang_sat_bbcode['urlconf']."';", array('type' => 'inline', 'group' => FORUM_JS_GROUP_COUNTER));
+		]]></hook>
+
+		<hook id="po_pre_post_contents, vt_quickpost_pre_message_box, ed_pre_message_box"><![CDATA[
+if(!defined('SAT_BBCODE_OPT_LOADED')) require $ext_info['path'].'/options.php';
+require $ext_info['path'].'/hooks/po_pre_post_contents.php';
+		]]></hook>
+
+		<hook id="po_modify_quote_info"><![CDATA[
+$quote_info['message'] = preg_replace('#\[hide=(\d+)]([\s\S]*)\[/hide]#', '[hide=$1][/hide]', $quote_info['message']);
+		]]></hook>
+
+		<hook id="ps_do_smilies_start"><![CDATA[
+require $ext_info['path'].'/hooks/ps_do_smilies_start.php';
+return forum_trim($text);
+		]]></hook>
+
+		<hook id="ps_preparse_tags_start"><![CDATA[
+if(!defined('SAT_BBCODE_OPT_LOADED')) require $ext_info['path'].'/options.php';
+require $ext_info['path'].'/hooks/ps_preparse_tags_start.php';
+		]]></hook>
+
+		<hook id="ps_do_bbcode_start"><![CDATA[
+$pattern = $replace = $pattern_callback = $replace_callback = array();
+		]]></hook>
+
+		<hook id="ps_parse_message_end"><![CDATA[
+$text = preg_replace('#<p [^>]*></p>#i', '', $text);
+$text = preg_replace('#(<[^/][\s\S]*>)</p>#i', '$1', $text);
+$text = preg_replace('#<p>(</[\s\S]+>)#i', '$1', $text);
+		]]></hook>
+
+		<hook id="ps_parse_message_pre_merge"><![CDATA[
+if (isset($inside)) {
+	$num_tokens = count($inside);
+	for ($i = 0; $i < $num_tokens; ++$i) {
+$inside[$i] = preg_replace('#\n#', "</code>\n<code>", $inside[$i]);
+	}
+}
+		]]></hook>
+
+		<hook id="ps_parse_message_post_merge"><![CDATA[
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+$text = str_replace('<div class="codebox"><pre>', '<div class="codebox"><h5 onclick="CCopping(this)">'.$lang_sat_bbcode['cc'].'</h5><pre>', $text);
+		]]></hook>
+
+		<hook id="ps_do_bbcode_end"><![CDATA[
+$text = str_replace('<a href=', '<a rel="nofollow" href=', $text);
+		]]></hook>
+
+		<hook id="ps_do_bbcode_replace"><![CDATA[
+if(!defined('SAT_BBCODE_OPT_LOADED')) require $ext_info['path'].'/options.php';
+global $sat_bbcodes;
+foreach ($sat_bbcodes as $val) {
+	if(isset($val['pattern']) && isset($val['replace'])) {
+		$repnum = count($val['replace']) > count($val['pattern']) ? count($val['pattern']) : count($val['replace']);
+		for ($i=0; $i<$repnum; $i++) {
+			$pattern[] = $val['pattern'][$i];
+			$replace[] = $val['replace'][$i];
+		}
+	}
+}
+		]]></hook>
+	</hooks>
+</extension>
