@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_contact</id>
+<title>Sat Contact</title>
+<description>Change contact details</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+  
+  <install><![CDATA[
+define('SAT_CONTACT_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_CONTACT_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+  
+<hooks>
+
+	<hook id="pf_start"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+	
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/Russian.php';
+	]]></hook>
+	
+	<hook id="pf_change_details_identity_validation"><![CDATA[
+require $ext_info['path'].'/hooks/pf_change_details_identity_validation.php';
+	]]></hook>
+	
+	<hook id="pf_change_details_identity_pre_skype"><![CDATA[
+require $ext_info['path'].'/hooks/pf_change_details_identity_pre_skype.php';
+	]]></hook>
+	
+	<hook id="pf_change_details_identity_pre_facebook"><![CDATA[
+require $ext_info['path'].'/hooks/pf_change_details_identity_pre_facebook.php';
+	]]></hook>
+	
+	<hook id="pf_change_details_about_pre_header_load"><![CDATA[
+require $ext_info['path'].'/hooks/pf_change_details_about_pre_header_load.php';
+	]]></hook>
+	
+	<hook id="vt_row_pre_post_contacts_merge"><![CDATA[
+require $ext_info['path'].'/hooks/vt_row_pre_post_contacts_merge.php';
+	]]></hook>
+
+</hooks>
+</extension>

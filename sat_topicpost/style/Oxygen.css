@@ -1,0 +1,4 @@
+.main-topic .hidden-author .post-author,
+.main-topic .hidden-author .sig-content {
+    display: none;
+}

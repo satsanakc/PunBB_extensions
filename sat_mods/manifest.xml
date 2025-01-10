@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_mods</id>
+  <title>Sat Mods</title>
+  <version>0.1</version>
+  <description>(sat_mods) - Модификации 
+- Убирает ширину и высоту аватара в постах и профиле. 
+- Позволяет использовать html в строке Forum Description. 
+- Активные темы отображаются за 30 суток. 
+- Добавляет названия тем на главную.
+  </description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.4</maxtestedon>
+  
+
+  <hooks>
+
+    <hook id="fn_generate_avatar_markup_end"><![CDATA[
+	$avatar_markup = preg_replace('/width="\d+" height="\d+" /i', '', $avatar_markup);
+    ]]></hook>
+
+    <hook id="hd_gen_elements"><![CDATA[
+	$gen_elements['<!-- forum_desc -->'] = htmlspecialchars_decode($gen_elements['<!-- forum_desc -->'], ENT_QUOTES);
+    ]]></hook>
+
+    <hook id="se_additional_quicksearch_variables"><![CDATA[
+	if ($action == 'show_recent')
+		$value = (isset($_GET['value'])) ? intval($_GET['value']) : 2592000;
+    ]]></hook>
+
+    <hook id="in_qr_get_cats_and_forums"><![CDATA[
+	$query['SELECT'] .= ', p.topic_id AS tid, t.subject';
+	array_push($query['JOINS'], 
+		array(
+			'LEFT JOIN'	=> 'posts AS p',
+			'ON'		=> 'f.last_post_id=p.id'
+		));
+	array_push($query['JOINS'], 
+		array(
+			'LEFT JOIN'	=> 'topics AS t',
+			'ON'		=> 'p.topic_id=t.id'
+		));
+    ]]></hook>
+
+    <hook id="in_normal_row_pre_display"><![CDATA[
+	$forum_page['item_body']['info']['lastpost'] = str_replace('<li class="info-lastpost"><span class="label">', '<li class="info-lastpost"><h4>'.$cur_forum['subject'].'<a class="lasttopic-link" href="'.forum_link($forum_url['topic'], $cur_forum['tid']).'"></a></h4><span class="label">', $forum_page['item_body']['info']['lastpost']);
+    ]]></hook>
+
+  </hooks>
+</extension>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_lastpost</id>
+  <title>Sat Last Post</title>
+  <version>0.1</version>
+  <description>(sat_lastpost) - Displays the last forum post. 
+  </description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.4</maxtestedon>
+  
+
+  <hooks>
+
+    <hook id="hd_head"><![CDATA[
+if(!defined('FORUM_PAGE_TYPE') || FORUM_PAGE_TYPE != 'admin-page') {
+	if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+		$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+	else
+		$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+}
+    ]]></hook>
+
+    <hook id="hd_gen_elements"><![CDATA[
+if(FORUM_PAGE_TYPE != 'admin-page')
+	require $ext_info['path'].'/hooks/hd_gen_elements.php';
+    ]]></hook>
+
+  </hooks>
+</extension>

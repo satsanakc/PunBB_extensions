@@ -1,0 +1,50 @@
+#brd-profile-identity .group3 .set4,
+#brd-profile-identity .group3 .set5,
+#brd-profile-identity .group3 .set6,
+#brd-profile-identity .group4 .set7,
+#brd-profile-identity .group4 .set11,
+#brd-profile-identity .group4 .set12,
+#brd-profile-identity .group4 .set13,
+#brd-profile-identity .group4 .set14 {
+    display: none;
+}
+
+#brd-profile-identity .group3 .sf-box label,
+#brd-profile-identity .group4 .sf-box label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    color: transparent;
+    -webkit-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    background-size: 100% 100%;
+}
+
+@media screen and (min-width: 720px) {
+  #brd-profile-identity .group3 .sf-box label,
+  #brd-profile-identity .group4 .sf-box label {
+    margin-left: -34px;
+    position: absolute;
+  }
+}
+
+#brd-profile-identity .group3 .set1 label {
+    background-image: url(img/url.png);
+}
+#brd-profile-identity .group3 .set2 label {
+    background-image: url(img/VK.png);
+}
+#brd-profile-identity .group3 .set3 label {
+    background-image: url(img/Ok.png);
+}
+#brd-profile-identity .group4 .set8 label {
+    background-image: url(img/discord.png);
+}
+#brd-profile-identity .group4 .set9 label {
+    background-image: url(img/Telegram.png);
+}
+#brd-profile-identity .group4 .set10 label {
+    background-image: url(img/Skype.png);
+}

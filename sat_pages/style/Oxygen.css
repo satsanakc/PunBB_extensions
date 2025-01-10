@@ -1,0 +1,72 @@
+.sat-pages-category .page-item {
+    border-style: solid none;
+    border-width: 1px;
+    border-color: #dde4eb;
+    border-top-color: #fff;
+    border-bottom-color: #ccc;
+}
+
+.sat-pages-category .hn {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    border-style: none none dashed none;
+    border-width: 1px;
+    border-color: #dde4eb;
+    background: #f1f1f1;
+}
+
+.sat-pages-category .page-entry {
+    padding: .5em 1.5em;
+}
+
+
+.hn strong.pages {
+    float: right;
+}
+
+.admin-page .main-frm .sat-pages-category {
+    display: -webkit-flex;
+    display: flex;
+    margin: 0 1.5em;
+    padding: .5em 0;
+}
+
+.admin-page .main-frm .sat-pages-category > div {
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+.admin-page .main-frm .sat-pages-category .category p {
+    padding-right: 1em;
+}
+
+.admin-page .main-frm .sat-pages-category:not(:last-of-type) {
+    border-style: none none dashed none;
+    border-width: 1px;
+    border-color: #dde4eb;
+}
+
+.sat-pages-category .pages .buttons {
+    float: right;
+    text-align: right;
+}
+
+.sat-pages-category .buttons a {
+    margin-left: .5em;
+}
+
+@media screen and (min-width: 600px) {
+    label br, legend br {display: inline}
+}
+
+#sat-pages-temp {
+    margin: .5em 1%;
+    position: absolute;
+    top: -2.5em;
+    width: 98%;
+}
+
+#sat-pages-temp button {
+    padding: 0 .3em .2em;
+    margin: .4em;
+}

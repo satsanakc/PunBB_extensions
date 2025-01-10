@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_default_avatar</id>
+  <title>Sat Default Avatar</title>
+  <version>0.1</version>
+  <description>(sat_default_avatar) - Adds a default avatar for those who don't have.
+  </description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.6</maxtestedon>
+  
+
+  <hooks>
+
+    <hook id="co_common"><![CDATA[
+$avlist = scandir($ext_info['path'].'/img/');
+unset($avlist[array_search('index.html', $avlist)]);
+unset($avlist[array_search('..', $avlist)]);
+unset($avlist[array_search('.', $avlist)]);
+$avlist = array_values($avlist);
+if (isset($avlist[0]) && isset($forum_config)) $forum_config['o_defava'] = $ext_info['url'].'/img/'.$avlist[0];
+    ]]></hook>
+
+    <hook id="fn_generate_avatar_markup_end"><![CDATA[
+if($avatar_markup)
+	$avatar_markup = '<img src="'.$base_url.'/'.$path.'" alt="'.$alt_attr.'" title="'.$alt_attr.'" />';
+else if(isset($forum_config['o_defava'])) {
+	$alt_attr = '';
+	if (is_string($username) && utf8_strlen($username) > 0) {
+		$alt_attr = forum_htmlencode($username);
+	}
+	$avatar_markup = '<img src="'.$forum_config['o_defava'].'" alt="'.$alt_attr.'" title="'.$alt_attr.'" />';
+}
+    ]]></hook>
+
+  </hooks>
+</extension>

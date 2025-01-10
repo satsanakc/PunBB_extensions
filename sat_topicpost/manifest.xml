@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_topicpost</id>
+<title>Sat Topicpost</title>
+<description>Pin the first post in the topic</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+  
+  <install><![CDATA[
+define('SAT_TOPICPOST_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_TOPICPOST_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+  
+<hooks>
+
+	<hook id="vt_start"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+	]]></hook>
+
+	<hook id="vt_qr_get_topic_info"><![CDATA[
+$query['SELECT'] .= ', t.pinned';
+	]]></hook>
+
+	<hook id="vt_qr_get_posts"><![CDATA[
+$query['SELECT'] .= ', p.hidden_author';
+if ($cur_topic['pinned'] > 0 && $posts_id[0] !== $cur_topic['pinned']) {
+	array_unshift($posts_id, $cur_topic['pinned']);
+	$query['WHERE']	= 'p.id IN ('.implode(',', $posts_id).')';
+}
+	]]></hook>
+
+	<hook id="vt_row_pre_post_ident_merge"><![CDATA[
+if ($cur_topic['pinned'] > 0 && $forum_page['page'] > 1 && $cur_post['id'] == $cur_topic['pinned']) {
+		--$forum_page['item_count'];
+		$forum_page['post_ident']['num'] = '<span class="post-num">'.forum_number_format(1).'</span>';
+}
+	]]></hook>
+
+	<hook id="vt_row_pre_display"><![CDATA[
+if ($cur_post['id'] == $cur_topic['first_post_id'] && $cur_topic['pinned'] > 0)
+	$forum_page['item_status']['pinned'] = 'pinned';
+if ($cur_post['hidden_author'] == 1)
+	$forum_page['item_status']['hidden_author'] = 'hidden-author';
+	]]></hook>
+
+	<hook id="ed_start, po_start"><![CDATA[
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+	]]></hook>
+
+	<hook id="ed_qr_get_post_info"><![CDATA[
+$query['SELECT'] .= ', p.hidden_author AS hidden, t.pinned';
+	]]></hook>
+
+	<hook id="ed_qr_update_post"><![CDATA[
+$hidden_author = isset($_POST['hidden_author']) ? 1 : 0;
+$query['SET'] .= ', hidden_author='.$hidden_author;
+	]]></hook>
+	
+	<hook id="ed_qr_update_subject"><![CDATA[
+$pinned = isset($_POST['pinned']) ? 1 : 0;
+$query['SET'] .= ', pinned='.$pinned;
+	]]></hook>
+
+	<hook id="po_pre_add_post, po_pre_add_topic"><![CDATA[
+$post_info['hidden_author'] = isset($_POST['hidden_author']) ? 1 : 0;
+$post_info['pinned'] = isset($_POST['pinned']) ? 1 : 0;
+	]]></hook>
+
+	<hook id="fn_add_post_qr_add_post, fn_add_topic_qr_add_topic_post"><![CDATA[
+		$query['INSERT'] .= ', hidden_author';
+		$query['VALUES'] .= ', '.$post_info['hidden_author'];
+	]]></hook>
+	
+	<hook id="fn_add_topic_qr_add_topic"><![CDATA[
+		$query['INSERT'] .= ', pinned';
+		$query['VALUES'] .= ', '.$post_info['pinned'];
+	]]></hook>
+
+	<hook id="po_pre_optional_fieldset, ed_pre_checkbox_display"><![CDATA[
+$forum_page['checkboxes']['hidden_author'] = '<div class="mf-item"><span class="fld-input"><input type="checkbox" id="fld'.(++$forum_page['fld_count']).'" name="hidden_author" value="1" '.((isset($_POST['hidden_author']) || (isset($cur_post) && $cur_post['hidden'] == '1' && !isset($_POST['form_sent']))) ? 'checked="checked" ' : '').'/></span> <label for="fld'.$forum_page['fld_count'].'">'.$lang_sat_topicpost['hidden_author'].'</label></div>';
+
+if ($can_edit_subject || $fid) {
+	$forum_page['checkboxes']['pinned'] = '<div class="mf-item"><span class="fld-input"><input type="checkbox" id="fld'.(++$forum_page['fld_count']).'" name="pinned" value="1" '.((isset($_POST['pinned']) || (isset($cur_post) && $cur_post['pinned'] == '1' && !isset($_POST['form_sent']))) ? 'checked="checked" ' : '').'/></span> <label for="fld'.$forum_page['fld_count'].'">'.$lang_sat_topicpost['pinned'].'</label></div>';
+}
+	]]></hook>
+
+</hooks>
+</extension>

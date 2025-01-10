@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru" dir="ltr" class="brd-page">
+<head>
+<style type="text/css" id="extra">
+  html, body {
+    background: none !important;
+    overflow: hidden;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+  }
+  body::before, #brd-page::before {
+    content: none;
+  }
+  img {
+    max-width: 100%;
+  }
+  .p {
+    padding: .35em 0;
+  }
+  *:not(br)+br {
+    display: none !important;
+  }
+</style>
+<script type="text/javascript">
+if (self !== top)(function() {
+  var id = window.name;
+  var h = 0;
+  window.setHeight = function() {
+    if(h != test_height.scrollHeight) {
+      h = test_height.scrollHeight;
+      window.parent.postMessage({html_frame:{id: id, event: 'resize', height: h}}, location.origin);
+    }
+    setTimeout(function() {setHeight();}, 66);
+  };
+  window[window.addEventListener?'addEventListener':'attachEvent']('message',function(e) {
+    var data = e.data;
+    if (data && data.html_frame_response) { var response = data.html_frame_response;
+      var extraStyle = document.querySelector('head style#extra');
+      while (document.head.firstChild) {
+        document.head.removeChild(document.head.firstChild);
+      }
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      document.body.style.font = response.font;
+      document.body.innerHTML = response.content.replace(/<\/p>[\s\S]*?<p[\s\S]*?>/mgi, '\n\n').replace(/<br\s?\/?>/mgi, '\n').replace(/<\/?p>/mgi, '')
+                                .replace(/&quot;/mgi, '"').replace(/&#039;/mgi, "'").replace(/&lt;/mgi, '<').replace(/&gt;/mgi, '>').replace(/&amp;/mgi, '&');
+      var testHeight = document.createElement('div');
+      testHeight.id = 'test_height';
+      testHeight.style='z-index: -1; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; padding: 0; margin:0;';
+      document.body.appendChild(testHeight);
+      var imgs = document.querySelectorAll('body .bigimg');
+      for (i=0; i<imgs.length; i++) imgs[i].classList.remove("bigimg");
+      var scripts = document.querySelectorAll('body script');
+      for (i=0; i<scripts.length; i++) {
+        eval(scripts[i].innerHTML);
+        scripts[i].parentNode.removeChild(scripts[i]);
+      }
+      for (i=0; i<response.style.length; i++) {
+        let l = document.createElement("link");
+        l.rel = 'stylesheet';
+        l.href = response.style[i];
+        document.head.appendChild(l);
+      }
+      document.head.appendChild(extraStyle);
+      setHeight();
+    }
+  });
+  document.addEventListener("DOMContentLoaded", function(e) {
+    window.parent.postMessage({html_frame:{id: id, event: 'load'}}, location.origin);
+  });
+})();
+</script>
+</head>
+<body class="entry-content">
+</body>
+</html>

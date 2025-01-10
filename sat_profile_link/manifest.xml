@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_profile_link</id>
+  <title>Sat Profile Link</title>
+  <version>1.0</version>
+  <description>(sat_profile_link) - Обращение к автору сообщения по клику на его ник, создание отдельной ссылки на профиль.</description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.4</maxtestedon>
+  
+
+  <hooks>
+
+	<hook id="hd_head"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+	]]></hook>
+
+	<hook id="vt_row_pre_post_ident_merge"><![CDATA[
+if (!$forum_user['is_guest']) {
+	if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+		require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+	else
+		require $ext_info['path'].'/lang/English.php';
+
+	$nick = forum_htmlencode($cur_post['username']);
+	require $ext_info['path'].'/options.php';
+
+	$forum_page['post_ident']['byline'] = '<span class="post-byline">'.sprintf((($cur_post['id'] == $cur_topic['first_post_id']) ? $lang_topic['Topic byline'] : $lang_topic['Reply byline']), ('<a title="'.sprintf($lang_sat_profile_link['refer'], forum_htmlencode($cur_post['username'])).'" href="javascript://" onclick="PUNBB.pun_bbcode.insert_text(\''.$sat_profile_link_refer.'\', \'\');">'.forum_htmlencode($cur_post['username']).'</a>'));
+}
+if ($forum_config['o_show_user_info'] == '0' && $cur_post['poster_id'] > 1 && $forum_user['g_view_users'] == '1') {
+	$forum_page['post_ident']['byline'] .= '<span class="profile"><a title="'.sprintf($lang_topic['Go to profile'], forum_htmlencode($cur_post['username'])).'" href="'.forum_link($forum_url['user'], $cur_post['poster_id']).'">i</a></span>';
+}
+if (!$forum_user['is_guest']) {
+	$forum_page['post_ident']['byline'] .= '</span>';
+}
+	]]></hook>
+
+	<hook id="vt_row_pre_post_contacts_merge"><![CDATA[
+if ($cur_post['poster_id'] > 1 && $forum_user['g_view_users'] == '1' && $forum_config['o_show_user_info'] == '1')
+{
+	$forum_page['post_contacts']['profile'] = '<span class="profile"><a title="'.sprintf($lang_topic['Go to profile'], forum_htmlencode($cur_post['username'])).'" href="'.forum_link($forum_url['user'], $cur_post['poster_id']).'">'.$lang_common['Profile'].'</a></span>';
+}
+	]]></hook>
+
+  </hooks>
+</extension>

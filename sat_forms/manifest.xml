@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>sat_forms</id>
+	<title>Sat Forms</title>
+	<version>0.1</version>
+	<description>(sat_forms) - Manages content added in html format.</description>
+	<author>satsana</author>
+	
+	<minversion>1.4.4</minversion>
+	<maxtestedon>1.4.6</maxtestedon>
+
+	<install><![CDATA[
+forum_config_add('o_sat_forms_footer', '');
+	]]></install>
+
+	<uninstall><![CDATA[
+forum_config_remove('o_sat_forms_footer');
+	]]></uninstall>
+
+	<hooks>
+
+		<hook id="aop_start"><![CDATA[
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+
+$forum_url['admin_settings_forms'] = 'admin/settings.php?section=forms';
+		]]></hook>
+
+		<hook id="ca_fn_generate_admin_menu_new_sublink"><![CDATA[
+global $lang_sat_forms;
+if (FORUM_PAGE_SECTION == 'settings') {
+	$forum_page['admin_submenu']['settings-announcements'] = '<li class="'.((FORUM_PAGE == 'admin-settings-forms') ? 'active' : 'normal').((empty($forum_page['admin_submenu'])) ? ' first-item' : '').'"><a href="'.forum_link('admin/settings.php?section=forms').'">'.$lang_sat_forms['form admin submenu'].'</a></li>';
+}
+		]]></hook>
+
+		<hook id="aop_new_section_validation"><![CDATA[
+if ($section == 'forms') {
+	($hook = get_hook('aop_announcements_validation')) ? eval($hook) : null;
+	($hook = get_hook('aop_form_validation')) ? eval($hook) : null;
+
+	if (!isset($form['announcement']) || $form['announcement'] != '1') $form['announcement'] = '0';
+
+	if ($form['announcement_message'] != '')
+		$form['announcement_message'] = forum_linebreaks($form['announcement_message']);
+	else
+		$form['announcement_message'] = $lang_admin_settings['Announcement message default'];
+
+	if ($form['sat_forms_footer'] != '')
+		$form['sat_forms_footer'] = forum_linebreaks($form['sat_forms_footer']);
+}
+		]]></hook>
+
+		<hook id="aop_new_section"><![CDATA[
+require $ext_info['path'].'/hooks/aop_new_section.php';
+		]]></hook>
+
+		<hook id="ft_js_include"><![CDATA[
+if (substr(FORUM_PAGE, 0, 5) != 'admin')
+	$tpl_main = str_replace('<!-- forum_javascript -->', '<!-- forum_javascript --><!-- sat_forms_footer -->', $tpl_main);
+		]]></hook>
+
+		<hook id="ft_end"><![CDATA[
+global $forum_config;
+// START SUBST - <!-- sat_forms_footer -->
+ob_start();
+($hook = get_hook('sat_forms_footer_output_start')) ? eval($hook) : null;
+?>
+<div id="brd-footer" class="brd">
+	<div class="container"><?php echo $forum_config['o_sat_forms_footer']; ?></div>
+</div>
+<?php
+($hook = get_hook('sat_forms_footer_end')) ? eval($hook) : null;
+$tpl_temp = forum_trim(ob_get_contents());
+$tpl_main = str_replace('<!-- sat_forms_footer -->', $tpl_temp, $tpl_main);
+ob_end_clean();
+// END SUBST - <!-- sat_forms_footer -->
+		]]></hook>
+
+		<hook id="hd_gen_elements"><![CDATA[
+$gen_elements['<!-- forum_announcement -->'] = str_replace('<h1 class="hn">', '<h2 class="hn">', $gen_elements['<!-- forum_announcement -->']);
+$gen_elements['<!-- forum_announcement -->'] = str_replace('</h1>', '</h2>', $gen_elements['<!-- forum_announcement -->']);
+		]]></hook>
+
+	</hooks>
+</extension>

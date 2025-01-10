@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>sat_image</id>
+	<title>Sat Image</title>
+	<version>0.2</version>
+	<description>(sat_image) - Supplement to the "sat_bbcode" extension for improved image insertion. Allows you to add signatures to images, wrap, and upload images to the Gyazo service.</description>
+	<author>satsana</author>
+	
+	<minversion>1.4.4</minversion>
+	<maxtestedon>1.4.6</maxtestedon>
+
+	<dependencies>
+		<dependency>sat_bbcode</dependency>
+	</dependencies>
+
+	<note type="uninstall" timing="pre">
+Данные о загруженных пользователями изображениях будут удалены из базы! Сами изображения при этом останутся в сети, ссылки на них будут работать по-прежнему.
+	</note>
+  
+	<install><![CDATA[
+if (!$forum_db->table_exists('sat_images')) {
+	$schema = array(
+		'FIELDS'	=> array(
+			'id'		=> array(
+				'datatype'	=> 'SERIAL',
+				'allow_null'	=> false
+			),
+			'uid'		=> array(
+				'datatype'	=> 'INT(10)',
+				'allow_null'	=> false,
+				'default'	=> '1'
+			),
+			'image_id'	=> array(
+				'datatype'	=> 'VARCHAR(100)',
+				'allow_null'	=> false,
+			),
+			'url'	=> array(
+				'datatype'	=> 'VARCHAR(100)',
+				'allow_null'	=> false,
+			),
+			'permalink_url'		=> array(
+				'datatype'	=> 'VARCHAR(100)',
+				'allow_null'	=> false
+			),
+			'thumb_url'	=> array(
+				'datatype'	=> 'VARCHAR(250)',
+				'allow_null'	=> false,
+			),
+			'type'	=> array(
+				'datatype'	=> 'VARCHAR(10)',
+				'allow_null'	=> false,
+			)
+		),
+		'PRIMARY KEY'	=> array('id'),
+		'INDEXES'	=> array(
+			'uid_idx'		=> array('uid')
+		)
+	);
+
+	$forum_db->create_table('sat_images', $schema);
+}
+	]]></install>
+	
+	<uninstall><![CDATA[
+		if ($forum_db->table_exists('sat_images') )
+			$forum_db->drop_table('sat_images');
+	]]></uninstall>
+
+	<hooks>
+
+		<hook id="hd_head"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+
+$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+		]]></hook>
+
+		<hook id="sat_bbcode_add_tags"><![CDATA[
+require $ext_info['path'].'/hooks/sat_bbcode_add_tags.php';
+		]]></hook>
+
+		<hook id="ps_handle_img_tag_start"><![CDATA[
+require $ext_info['path'].'/hooks/ps_handle_img_tag_start.php';
+return $img_tag;
+		]]></hook>
+
+		<hook id="mi_new_action"><![CDATA[
+require $ext_info['path'].'/hooks/mi_new_action.php';
+		]]></hook>
+
+	</hooks>
+</extension>

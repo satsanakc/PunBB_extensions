@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>sat_html</id>
+	<title>Sat HTML</title>
+	<version>0.1</version>
+	<description>(sat_html) - Adds [html] and [frame] tags in the "Sat BBcode" BB code panel.</description>
+	<author>satsana</author>
+	
+	<minversion>1.4.4</minversion>
+	<maxtestedon>1.4.6</maxtestedon>
+
+	<dependencies>
+		<dependency>sat_bbcode</dependency>
+	</dependencies>
+
+	<hooks>
+
+		<hook id="hd_head"><![CDATA[
+$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+		]]></hook>
+
+		<hook id="ps_preparse_tags_start"><![CDATA[
+$tags_limit_bbcode['frame'] = array();
+		]]></hook>
+
+		<hook id="sat_bbcode_add_tags"><![CDATA[
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+
+function handle_html_tag($txt) {
+	$id = mt_rand();
+	return '</p><iframe id="html_frame'.$id.'" src="/extensions/sat_html/frame.html" class="html_frame" name="html_frame'.$id.'" scrolling="auto" frameborder="0" vspace="0" hspace="0" width="100%" height="0" allowfullscreen="allowfullscreen" sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts allow-popups"><p>'.$txt.'</p></iframe><p>';
+}
+
+function handle_frame_tag($m) {
+	return '</p><div style="padding: 5px 0 0; overflow: hidden; position: relative; max-width: '.$m[1].'px;"><div style="overflow: hidden; position: relative; height: 0; padding-bottom: '.($m[3] == 'r' ? ($m[2]/$m[1]*100).'%' : $m[2].'px').';"><iframe src="'.$m[4].'" frameborder="0" vspace="0" hspace="0" scrolling="auto" allowfullscreen="allowfullscreen" loading="lazy" sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts allow-popups" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;"></iframe></div></div><p>';
+}
+
+$sat_bbcodes['frame'] = array(
+//	'title'		=>	$lang_sat_html['frame'],
+	'value'		=>	'&#xf565',
+	'group'		=>	'04media',
+	'weight'	=>	12,
+	'block'		=>	true,
+	'del_quotes'	=>	true,
+//	'onclick'	=>	'PUNBB.pun_bbcode.insert_text(\'[frame]\', \'[/frame]\n\')',
+
+	'box'		=>	'<fieldset class="frm-group">'.$lang_sat_html['framenote'].'<br><input type="text" name="framelink" id="framelink" style="width: 100%;"><br><br>'.$lang_sat_html['framesize'].'<br><input type="text" name="framewidth" id="framewidth" size="3" oninput="valnum($(this), \'positiveint\')"> x <input type="text" name="frameheight" id="frameheight" size="3" oninput="valnum($(this), \'positiveint\')"><br><br><input type="checkbox" name="frameres" id="frameres" checked="checked"> '.$lang_sat_html['frameresize'].'</fieldset><div class="frm-buttons"><span class="submit primary"><input type="button" name="insertframe" value="'.$lang_sat_html['framebut'].'" onclick="insertFrame()"></span></div>',
+	'pattern'	=>	array('#\[frame=(\d+)x(\d+)(r?)\](.*?)\[/frame\]#ms'),
+	'replace'	=>	array('".handle_frame_tag($matches)."')
+);
+
+$sat_bbcodes['html'] = array(
+	'title'		=>	$lang_sat_html['html'],
+	'value'		=>	'&#xf1c9',
+	'group'		=>	'04media',
+	'weight'	=>	10,
+	'block'		=>	true,
+	'onclick'	=>	'PUNBB.pun_bbcode.insert_text(\'[html]\', \'[/html]\n\')',
+	'pattern'	=>	array('#\[html\](.*?)\[/html\]#ms'),
+	'replace'	=>	array('".handle_html_tag($matches[1])."')
+);
+		]]></hook>
+
+	</hooks>
+</extension>

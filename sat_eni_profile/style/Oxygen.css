@@ -1,0 +1,20 @@
+.description {
+    display: none;
+    text-align: justify;
+}
+
+.mf-item .description {
+    margin-left: 13px;
+}
+
+.visible .description {
+    display: block;
+}
+
+.racedesc {
+    display: none;
+}
+
+.racedesc br {
+    display: block;
+}

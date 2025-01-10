@@ -1,0 +1,51 @@
+.mail-list table {line-height: .3em;}
+.mail-list td{padding: .3em 1.417em;}
+.mail-list th.tc0, 
+.mail-list th.tc1, 
+.mail-list th.tc2, 
+.mail-list td.tc0, 
+.mail-list td.tc1, 
+.mail-list td.tc2 {
+	width: 2.3em;
+	text-align: center;
+	padding-left: 0;
+	padding-right: 0;
+	vertical-align: middle;
+}
+.mail-list td.tc4, 
+.mail-list td.tc5 {white-space: nowrap;overflow: hidden;}
+.mail-list .selected td {background: #ffc;}
+.msg-full {font-weight: bold;color: red;}
+.inbox-full {color: #f39898;}
+
+@media screen and (max-width: 600px){
+	.mail-list th.tc5, 
+	.mail-list td.tc5 {display:none;}
+}
+
+#brd-post .topicpost .posthead,
+#brd-post .topicpost .postbody {
+    border-left-width: 0;
+}
+
+#nav-pan-pm[data-num-unread="0"] em {
+    display: none;
+}
+.unreads {
+    display: inline-block;
+    position: relative;
+    top: -.6em;
+    height: 15px;
+    min-width: 15px;
+    padding: 0px 2px;
+    margin-left: 4px;
+    text-align: center;
+    border-radius: 8px 8px 8px 0;
+    border-width: 0;
+    font-style: normal;
+    font-size: 10px;
+    line-height: 14px;
+    color: #fff;
+    background: red;
+    z-index: 1;
+}

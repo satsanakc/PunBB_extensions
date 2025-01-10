@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>sat_youtube</id>
+	<title>Sat YouTube</title>
+	<version>0.1.3</version>
+	<description>(sat_youtube) - Adds a [video] tag in the "Sat BBcode" BB code panel, which allows you to insert videos from the YouTube service into forum posts.</description>
+	<author>satsana</author>
+	
+	<minversion>1.4.4</minversion>
+	<maxtestedon>1.4.6</maxtestedon>
+
+	<dependencies>
+		<dependency>sat_bbcode</dependency>
+	</dependencies>
+
+	<hooks>
+
+		<hook id="hd_head"><![CDATA[
+$forum_loader->add_css($ext_info['url'].'/style.css', array('type' => 'url', 'media' => 'screen'));
+$forum_loader->add_js($ext_info['url'].'/script.js?v=1', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+		]]></hook>
+
+		<hook id="ps_preparse_tags_start"><![CDATA[
+$tags_limit_bbcode['video'] = array();
+		]]></hook>
+
+		<hook id="ps_handle_url_tag_end"><![CDATA[
+if ($bbcode)
+	return $link;
+		]]></hook>
+
+		<hook id="sat_bbcode_add_tags"><![CDATA[
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+
+require $ext_info['path'].'/hooks/video_tag.php';
+		]]></hook>
+
+	</hooks>
+</extension>

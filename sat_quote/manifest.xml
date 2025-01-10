@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_quote</id>
+  <title>Sat Quote</title>
+  <version>0.1</version>
+  <description>(sat_quote) - Quoting in the form of a quick response.
+  </description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.6</maxtestedon>
+  
+  <dependencies>
+    <dependency>sat_bbcode</dependency>
+  </dependencies>
+
+  <hooks>
+
+	<hook id="hd_head"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+
+$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+	]]></hook>
+
+	<hook id="po_qr_get_quote"><![CDATA[
+require $ext_info['path'].'/hooks/po_qr_get_quote.php';
+	]]></hook>
+
+	<hook id="sat_bbcode_add_tags"><![CDATA[
+require $ext_info['path'].'/hooks/sat_bbcode_add_tags.php';
+	]]></hook>
+
+	<hook id="vt_main_output_start, se_results_output_start, po_start, mr_post_actions_output_start, ed_start, dl_start"><![CDATA[
+$query = array(
+	'SELECT'	=> 'id, avatar',
+	'FROM'		=> 'users'
+);
+$avatars = array();
+$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+while ($rows = $forum_db->fetch_assoc($result)) {
+	$avatars[$rows['id']] = $rows['avatar'];
+}
+	]]></hook>
+
+  </hooks>
+</extension>

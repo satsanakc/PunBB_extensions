@@ -1,0 +1,35 @@
+.item-summary .info-posted {
+    margin-left: 100%;
+    text-align: center;
+    width: 8em;
+    left: 957em;
+}
+
+.main-content.forum-views .main-item ul {
+    width: 42em;
+    right: -41em;
+    margin-left: -42em;
+}
+
+.main-content.forum-views .main-item {
+    padding-right: 41em;
+}
+
+li.info-posted {
+    width: 8em;
+    text-align: center;
+}
+
+@media screen and (max-width: 760px) {
+    .info-posted {display:none}
+    .main-content.forum-views .main-item ul {width:20em;right:-21em}
+    .main-content.forum-views .main-item {padding-right:21em}
+}
+
+@media screen and (max-width: 600px) {
+    .main-content.forum-views .main-item {padding-right:11em}
+}
+
+@media screen and (max-width: 460px) {
+    .main-content.forum-views .main-item {padding-right:0}
+}

@@ -1,0 +1,14 @@
+img.citeava {
+    height: 24px;
+    margin-right: 0.5em;
+    float: left;
+    margin-left: 1em;
+}
+
+a.citelink,
+a.citelink:visited {
+    color: #00579c;
+    font-size: .8em;
+    font-weight: normal;
+    float: right;
+}

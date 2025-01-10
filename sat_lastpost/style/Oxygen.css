@@ -1,0 +1,60 @@
+#brd-lastpost {
+    position: relative;
+    margin: 1em 0;
+    padding: .5em 1.5em;
+    height: 208px;
+    overflow: hidden;
+    display: none;
+}
+#brd-viewforum #brd-lastpost {
+    display: block;
+}
+#brd-lastpost h2 {
+    margin-left: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#brd-lastpost .content {
+    margin-left: 180px;
+}
+#brd-lastpost .user-avatar {
+    position: absolute;
+    left: 1.5em;
+    top: .5em;
+    margin: 0;
+}
+#brd-lastpost .avatar-image {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    background-position: top;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 8px;
+    border-color: #f4f9fd;
+}
+#brd-lastpost .content {
+    height: calc(100% - 30px);
+    overflow: auto;
+}
+@media screen and (max-width: 760px) {
+  #brd-lastpost .user-avatar {
+    display: none;
+  }
+  #brd-lastpost h2,
+  #brd-lastpost .content {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 600px) {
+  #brd-lastpost .datetime,
+  #brd-lastpost small {
+    display: none;
+  }
+}

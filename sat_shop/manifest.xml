@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_shop</id>
+  <title>Sat Shop</title>
+  <version>0.1</version>
+  <description>(sat_shop) - Мини-магазин</description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.4</maxtestedon>
+
+  <dependencies>
+    <dependency>pun_jquery, sat_pages</dependency>
+  </dependencies>
+  
+  
+  <install><![CDATA[
+define('SAT_SHOP_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+  ]]></install>
+	
+  <uninstall><![CDATA[
+forum_config_remove(array(
+	'o_sat_shop_mrh_login',
+	'o_sat_shop_mrh_pass1',
+	'o_sat_shop_mrh_pass2',
+	'o_sat_shop_mrh_test_pass1',
+	'o_sat_shop_mrh_test_pass2'
+));
+if ($forum_db->table_exists('sat_goods') )
+	$forum_db->drop_table('sat_goods');
+if ($forum_db->field_exists('groups', 'sat_orders'))
+	$forum_db->drop_field('groups', 'sat_orders');
+  ]]></uninstall>
+  
+  <hooks>
+    
+    <hook id="mi_new_action"><![CDATA[
+	include $ext_info['path'].'/hooks/mi_new_action.php';
+    ]]></hook>
+    
+  </hooks>
+</extension>

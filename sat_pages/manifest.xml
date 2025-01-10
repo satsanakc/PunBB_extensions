@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_pages</id>
+  <title>Sat Pages</title>
+  <version>1.0</version>
+  <description>(sat_pages) - Создание информационных страниц и Главной</description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.4</maxtestedon>
+
+  <dependencies>
+    <dependency>pun_jquery</dependency>
+  </dependencies>
+  
+  <note type="uninstall" timing="pre">
+    Все созданные страницы будут удалены! Восстановить их будет невозможно.
+  </note>
+  
+  <install><![CDATA[
+define('SAT_PAGES_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+  ]]></install>
+	
+  <uninstall><![CDATA[
+if ($forum_db->table_exists('sat_pages') )
+	$forum_db->drop_table('sat_pages');
+if ($forum_db->table_exists('sat_category') )
+	$forum_db->drop_table('sat_category');
+  ]]></uninstall>
+  
+  <hooks>
+    
+    <hook id="mi_new_action"><![CDATA[
+	include $ext_info['path'].'/hooks/mi_new_action.php';
+    ]]></hook>
+
+    <hook id="fn_generate_navlinks_end"><![CDATA[
+	include $ext_info['path'].'/hooks/fn_generate_navlinks_end.php';
+    ]]></hook>
+
+    <hook id="ca_fn_generate_admin_menu_new_sublink"><![CDATA[
+	include $ext_info['path'].'/hooks/ca_fn_generate_admin_menu_new_sublink.php';
+    ]]></hook>
+
+    <hook id="in_start"><![CDATA[
+	include $ext_info['path'].'/hooks/in_start.php';
+    ]]></hook>
+
+    <hook id="hd_main_elements"><![CDATA[
+      if (FORUM_PAGE == 'home')
+        $main_elements['<!-- forum_crumbs_top -->'] = $main_elements['<!-- forum_crumbs_end -->'] = '';
+    ]]></hook>
+
+    <hook id="hd_gen_elements"><![CDATA[
+      global $sat_cat, $sat_page;
+      if (($sat_page && !isset($sat_page['announce'])) || ($sat_cat && !isset($sat_cat[0]['announce'])))
+        $gen_elements['<!-- forum_announcement -->'] = '';
+    ]]></hook>
+
+    <hook id="hd_head"><![CDATA[
+	if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	  $forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+	else
+	  $forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+    ]]></hook>
+
+    <hook id="ca_fn_generate_admin_menu_new_link"><![CDATA[
+      if ($forum_user['g_id'] == FORUM_ADMIN) {
+	if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+		require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+	else
+		require $ext_info['path'].'/lang/English.php';
+
+	$forum_page['admin_menu']['sat_pages'] = '<li class="'.((FORUM_PAGE_SECTION == 'sat_pages') ? 'active' : 'normal').((empty($forum_page['admin_menu'])) ? ' first-item' : '').'"><a href="'.forum_link('extensions/'.$ext_info['id'].'/options.php').'"><span>'.$lang_sat_page['info_pages'].'</span></a></li>';
+      }
+    ]]></hook>
+    
+  </hooks>
+</extension>

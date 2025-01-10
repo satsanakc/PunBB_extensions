@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+  <id>sat_posted</id>
+  <title>Sat Posted</title>
+  <version>0.1</version>
+  <description>(sat_posted) - Добавление в список тем колонки с датой их создания</description>
+  <author>satsana</author>
+  
+  <minversion>1.4.2</minversion>
+  <maxtestedon>1.4.4</maxtestedon>
+  
+
+  <hooks>
+
+    <hook id="hd_head"><![CDATA[
+	if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	  $forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+	else
+	  $forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+    ]]></hook>
+    
+    <hook id="vf_main_output_start"><![CDATA[
+	if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+		require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+	else
+		require $ext_info['path'].'/lang/English.php';
+
+	array_insert($forum_page['item_header']['info'], 0, '<strong class="info-posted">'.$lang_sat_posted['posted'].'</strong>', 'posted');
+    ]]></hook>
+    
+    <hook id="vf_row_pre_item_subject_merge"><![CDATA[
+	array_insert($forum_page['item_body']['info'], 0, '<li class="info-posted"><strong>'.format_time($cur_topic['posted']).'</strong></li>', 'posted');
+    ]]></hook>
+
+  </hooks>
+</extension>
