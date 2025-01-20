@@ -13,6 +13,9 @@ if (!$forum_db->field_exists('users', 'ch_gender'))
 
 if (!$forum_db->field_exists('users', 'ch_birth'))
     $forum_db->add_field('users', 'ch_birth', 'BIGINT(12)', false, -62167219200);
+    
+if (!$forum_db->field_exists('users', 'ch_fract_id'))
+    $forum_db->add_field('users', 'ch_fract_id', 'INT(10) UNSIGNED', true);
 
 if (!$forum_db->field_exists('users', 'ch_metier'))
     $forum_db->add_field('users', 'ch_metier', 'VARCHAR(255)', true);
@@ -63,6 +66,28 @@ if (!$forum_db->table_exists('races')) {
     $forum_db->create_table('races', $schema);
 }
 
+if (!$forum_db->table_exists('fractions')) {
+    $schema = array(
+        'FIELDS'      => array(
+            'id'            	=> array(
+                'datatype'        => 'SERIAL',
+                'allow_null'      => false
+            ),
+            'name'          	=> array(
+                'datatype'        => 'VARCHAR(100)',
+                'allow_null'      => false,
+                'default'         => '\'\''
+            ),
+            'description'       => array(
+                'datatype'        => 'TEXT',
+                'allow_null'      => true
+            )
+        ),
+        'PRIMARY KEY' => array('id')
+    );
+    $forum_db->create_table('fractions', $schema);
+}
+
 if (!$forum_db->table_exists('gods')) {
     $schema = array(
         'FIELDS'      => array(
@@ -106,32 +131,6 @@ if (!$forum_db->table_exists('religion')) {
     $forum_db->create_table('religion', $schema);
 }
 
-if (!$forum_db->table_exists('fraction')) {
-    $schema = array(
-        'FIELDS'      => array(
-            'id'            	=> array(
-                'datatype'          => 'SERIAL',
-                'allow_null'        => false
-            ),
-            'name'        	=> array(
-                'datatype'          => 'VARCHAR(100)',
-                'allow_null'        => false,
-                'default'        => '\'\''
-            ),
-            'basis'        	=> array(
-                'datatype'          => 'TINYINT(1)',
-                'allow_null'        => true
-            ),
-            'description'	=> array(
-                'datatype'          => 'TEXT',
-                'allow_null'        => true
-            )
-        ),
-        'PRIMARY KEY' => array('id')
-    );
-    $forum_db->create_table('fraction', $schema);
-}
-
 if (!$forum_db->table_exists('char_log'))
 {
 	$schema = array(
@@ -166,7 +165,15 @@ if (!$forum_db->table_exists('char_log'))
 				'allow_null'		=> false,
 				'default'		=> '-62167219200'
 			),
+			'fraction'			=> array(
+				'datatype'		=> 'INT(10) UNSIGNED',
+				'allow_null'		=> true
+			),
 			'metier'     		=> array(
+                		'datatype'       	=> 'VARCHAR(255)',
+                		'allow_null'        	=> true
+            		),
+            		'gods'     		=> array(
                 		'datatype'       	=> 'VARCHAR(255)',
                 		'allow_null'        	=> true
             		),
@@ -197,3 +204,4 @@ if (!$forum_db->table_exists('char_log'))
 
 require $ext_info['path'].'/extra/gods.php';
 require $ext_info['path'].'/extra/races.php';
+require $ext_info['path'].'/extra/fractions.php';

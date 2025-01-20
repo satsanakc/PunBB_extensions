@@ -12,6 +12,8 @@ if ($forum_db->field_exists('users', 'ch_birth'))
 	$forum_db->drop_field('users', 'ch_birth');
 if ($forum_db->field_exists('users', 'ch_metier'))
 	$forum_db->drop_field('users', 'ch_metier');
+if ($forum_db->field_exists('users', 'ch_race_id'))
+	$forum_db->drop_field('users', 'ch_race_id');
 if ($forum_db->field_exists('users', 'ch_skills'))
 	$forum_db->drop_field('users', 'ch_skills');
 if ($forum_db->field_exists('users', 'ch_person'))
@@ -25,6 +27,8 @@ if ($forum_db->field_exists('users', 'showdesc'))
 
 if ($forum_db->table_exists('races'))
 	$forum_db->drop_table('races');
+if ($forum_db->table_exists('fractions'))
+	$forum_db->drop_table('fractions');
 if ($forum_db->table_exists('gods'))
 	$forum_db->drop_table('gods');
 if ($forum_db->table_exists('religion'))
