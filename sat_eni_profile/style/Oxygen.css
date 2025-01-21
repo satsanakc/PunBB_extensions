@@ -20,5 +20,9 @@
 }
 
 #display-profile strong:not(.warn) {
+    cursor: pointer;
+}
 
+#display-profile strong:not(.warn):hover {
+    text-decoration: underline;
 }

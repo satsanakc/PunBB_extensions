@@ -1,8 +1,8 @@
 <?php
 
 $disp = array(
-	'<strong class="warn">'.$lang_eni_profile['identity'].'</strong>',
-	'<strong>'.$lang_eni_profile['character'].'</strong>'
+	'<strong class="warn" data-section="user">'.$lang_eni_profile['identity'].'</strong>',
+	'<strong data-section="char">'.$lang_eni_profile['character'].'</strong>'
 );
 
 ($hook = get_hook('sat_eni_profile_display')) ? eval($hook) : null;

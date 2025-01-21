@@ -15,3 +15,18 @@ function fractchange(a) {
   $('.fractdesc').hide();
   $('.fractdesc.item' + a.value).show();
 }
+
+function showSection(s) {
+  $('.data-list li:not(#display-profile), .profile > div:not(.set1)').addClass('hidden');
+  $('.'+s).removeClass('hidden');
+  $('#display-profile strong').removeClass('warn');
+  $('#display-profile strong[data-section="'+s+'"]').addClass('warn');
+  setCookie('profsect', s, 365);
+}
+
+$('.data-list li:not(#display-profile):not([class]), .profile > div:not(.set1)[class^="ct-set"]').addClass('user');
+showSection(!getCookie('profsect') ? $('#display-profile strong.warn')[0].dataset.section : getCookie('profsect'));
+
+$('#display-profile strong').on('click', function(e) {
+  showSection(e.target.dataset.section);
+});
