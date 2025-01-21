@@ -5,7 +5,7 @@ if(!defined('SAT_ENI_PROFILE_UNINSTALL')) die();
 forum_config_remove(
 	array(
 		'o_sat_eni_date'
-	);
+	)
 );
 
 if ($forum_db->field_exists('users', 'ch_name'))
@@ -16,6 +16,8 @@ if ($forum_db->field_exists('users', 'ch_gender'))
 	$forum_db->drop_field('users', 'ch_gender');
 if ($forum_db->field_exists('users', 'ch_birth'))
 	$forum_db->drop_field('users', 'ch_birth');
+if ($forum_db->field_exists('users', 'ch_fract_id'))
+	$forum_db->drop_field('users', 'ch_fract_id');
 if ($forum_db->field_exists('users', 'ch_metier'))
 	$forum_db->drop_field('users', 'ch_metier');
 if ($forum_db->field_exists('users', 'ch_skills'))
