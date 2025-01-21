@@ -10,3 +10,8 @@ function racechange(a) {
   else
     $('.racedesc.item' + a.value).show();
 }
+
+function fractchange(a) {
+  $('.fractdesc').hide();
+  $('.fractdesc.item' + a.value).show();
+}

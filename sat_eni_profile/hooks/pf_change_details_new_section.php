@@ -19,7 +19,7 @@ if ($section == 'character') {
 		define('FORUM_PAGE', 'profile-character');
 		require FORUM_ROOT.'header.php';
 //require $ext_info['path'].'/extra/races.php';
-//require $ext_info['path'].'/extra/fractions.php';
+
 		// START SUBST - <!-- forum_main -->
 		ob_start();
 
@@ -155,12 +155,46 @@ $birth = isset($form['ch_birth']) ? forum_htmlencode($form['ch_birth']) : forum_
 					<div class="sf-box text">
 						<label for="fld<?php echo ++$forum_page['fld_count'] ?>"><span><?php echo $lang_eni_profile['metier'] ?></span></label><br />
 						<span class="fld-input"><input type="text" id="fld<?php echo $forum_page['fld_count'] ?>" name="form[ch_metier]" value="<?php echo(isset($form['ch_metier']) ? forum_htmlencode($form['ch_metier']) : forum_htmlencode($user['ch_metier'])) ?>" size="35" maxlength="40" /></span>
+						<div class="description"><?php echo $lang_eni_profile['metdesc'] ?></div>
 					</div>
 				</div>
 				<div class="sf-set set<?php echo ++$forum_page['item_count'] ?>">
 					<div class="sf-box text">
 						<label for="fld<?php echo ++$forum_page['fld_count'] ?>"><span><?php echo $lang_eni_profile['fraction'] ?></span></label><br />
-						<span class="fld-input"><input type="text" id="fld<?php echo $forum_page['fld_count'] ?>" name="form[fraction]" value="" size="35" maxlength="40" /></span>
+						<span class="fld-input">
+<?php
+$fract_list = array();
+
+$query = array(
+	'SELECT'	=> '*',
+	'FROM'		=> 'fractions',
+	'ORDER BY'	=> 'id'
+);
+$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+while ($cur_fract = $forum_db->fetch_assoc($result)) {
+	$fract_list[] = $cur_fract;
+	if ($user['ch_fract_id'] == $cur_fract['id'])
+		$fract = $cur_fract['id'];
+}
+$fract = isset($_POST['ch_fract_id']) ? $_POST['ch_fract_id'] : $fract;
+?>
+							<select id="fld<?php echo ++$forum_page['fld_count'] ?>" name="form[ch_fract_id]" onchange="fractchange(this)">
+								<option value="">--</option>
+<?php
+for ($i = 0; $i < count($fract_list); $i++) {
+	echo "\t\t\t\t\t\t\t\t".'<option value="'.$fract_list[$i]['id'].'"'.($fract == $fract_list[$i]['id'] ? ' selected="selected"' : '').'>'.$fract_list[$i]['name'].'</option>'."\n";
+}
+?>
+							</select>
+							<div class="description">
+<?php
+echo "\t\t\t\t\t\t\t\t".'<div class="fractdesc item"'.(empty($fract) ? ' style="display: block;"' : '').'>'.$lang_eni_profile['emptyfract'].'</div>';
+for ($i = 0; $i < count($fract_list); $i++) {
+	echo "\t\t\t\t\t\t\t\t".'<div class="fractdesc item'.$fract_list[$i]['id'].'"'.($fract == $fract_list[$i]['id'] ? ' style="display: block;"' : '').'>'.$fract_list[$i]['description'].'</div>';
+}
+?>
+							</div>
+						</span>
 					</div>
 				</div>
 				

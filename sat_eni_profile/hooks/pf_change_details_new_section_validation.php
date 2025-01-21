@@ -1,7 +1,7 @@
 <?php if (!defined('FORUM')) die();
 
 if ($section == 'character') {
-	$form = extract_elements(array('ch_name', 'ch_race_id', 'ch_gender', 'ch_metier', 'showdesc'));
+	$form = extract_elements(array('ch_name', 'ch_race_id', 'ch_gender', 'ch_metier', 'ch_fract_id', 'showdesc'));
 	$date = new DateTimeImmutable();
 	$form['ch_birth'] = date_timestamp_get($date->setDate($_POST['ch_birth3'], $_POST['ch_birth2'], $_POST['ch_birth1']));
 	$form['ch_skills'] = forum_linebreaks(forum_trim($_POST['ch_skills']));
