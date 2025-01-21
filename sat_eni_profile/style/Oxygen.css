@@ -18,3 +18,7 @@
 .racedesc br {
     display: block;
 }
+
+#display-profile strong:not(.warn) {
+
+}

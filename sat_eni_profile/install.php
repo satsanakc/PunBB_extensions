@@ -2,6 +2,8 @@
 
 if(!defined('SAT_ENI_PROFILE_INSTALL')) die();
 
+forum_config_add('o_sat_eni_date', '-17482557786');
+
 if (!$forum_db->field_exists('users', 'ch_name'))
     $forum_db->add_field('users', 'ch_name', 'VARCHAR(255)', true);
 

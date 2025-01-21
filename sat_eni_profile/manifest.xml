@@ -6,7 +6,7 @@
 <title>Sat Profile for Enirin</title>
 <description>Чарлист персонажа в профиле</description>
 <author>satsana</author>
-<version>0.1</version>
+<version>0.1.1</version>
 <minversion>1.4.2</minversion>
 <maxtestedon>1.4.6</maxtestedon>
   
@@ -52,12 +52,20 @@ $lang_profile['Section identity'] = $lang_eni_profile['identity'];
 $forum_page['main_menu'] = array_slice( $forum_page['main_menu'], 0, 2 ) + [ 'character' => '<li'.(($section == 'identity') ? ' class="active"' : '').'><a href="'.forum_link($forum_url['profile_character'], $id).'"><span>'.$lang_eni_profile['character'].'</span></a></li>' ] + $forum_page['main_menu'];
 	]]></hook>
 
+	<hook id="pf_change_details_new_section"><![CDATA[
+require $ext_info['path'].'/hooks/pf_change_details_new_section.php';
+	]]></hook>
+
 	<hook id="pf_change_details_new_section_validation"><![CDATA[
 require $ext_info['path'].'/hooks/pf_change_details_new_section_validation.php';
 	]]></hook>
 
-	<hook id="pf_change_details_new_section"><![CDATA[
-require $ext_info['path'].'/hooks/pf_change_details_new_section.php';
+	<hook id="pf_change_details_about_pre_header_load"><![CDATA[
+require $ext_info['path'].'/hooks/pf_change_details_about_pre_header_load.php';
+	]]></hook>
+
+	<hook id="pf_change_details_about_pre_user_private_info"><![CDATA[
+require $ext_info['path'].'/hooks/pf_change_details_about_pre_user_private_info.php';
 	]]></hook>
 
 </hooks>

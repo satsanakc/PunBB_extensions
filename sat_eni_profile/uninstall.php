@@ -2,6 +2,12 @@
 
 if(!defined('SAT_ENI_PROFILE_UNINSTALL')) die();
 
+forum_config_remove(
+	array(
+		'o_sat_eni_date'
+	);
+);
+
 if ($forum_db->field_exists('users', 'ch_name'))
 	$forum_db->drop_field('users', 'ch_name');
 if ($forum_db->field_exists('users', 'ch_race_id'))

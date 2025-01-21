@@ -19,10 +19,7 @@ if ($section == 'character') {
 		define('FORUM_PAGE', 'profile-character');
 		require FORUM_ROOT.'header.php';
 //require $ext_info['path'].'/extra/races.php';
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of cf9f726 (Обновление списка рас, добавление фракций.)
 		// START SUBST - <!-- forum_main -->
 		ob_start();
 
