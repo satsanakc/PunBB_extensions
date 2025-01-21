@@ -11,7 +11,8 @@
     display: block;
 }
 
-.racedesc {
+.racedesc,
+.fractdesc {
     display: none;
 }
 
