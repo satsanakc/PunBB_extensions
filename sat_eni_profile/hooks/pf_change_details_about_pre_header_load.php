@@ -7,6 +7,9 @@ $disp = array(
 
 ($hook = get_hook('sat_eni_profile_display')) ? eval($hook) : null;
 
+if (!defined('FORUM_PARSER_LOADED'))
+	require FORUM_ROOT.'include/parser.php';
+
 $forum_page['user_info'] = array('display' => '<li id="display-profile"><span>'.$lang_eni_profile['display'].': '.implode(' | ', $disp).'</span></li>') + $forum_page['user_info'];
 
 if ($user['ch_name'] != '')
@@ -76,13 +79,13 @@ if (!empty($user['gods']))
 	$forum_page['society']['gods'] = '<li class="char"><span>'.$lang_eni_profile['religion'].': <strong>'.implode(', ', $user['gods']).'</strong></span></li>';
 
 if ($user['ch_skills'] != '')
-	$forum_page['skills'] = forum_htmlencode($user['ch_skills']);
+	$forum_page['skills'] = parse_message($user['ch_skills'], 0);
 
 if ($user['ch_person'] != '')
-	$forum_page['person'] = forum_htmlencode($user['ch_person']);
+	$forum_page['person'] = parse_message($user['ch_person'], 0);
 
 if ($user['ch_bio'] != '')
-	$forum_page['bio'] = forum_htmlencode($user['ch_bio']);
+	$forum_page['bio'] = parse_message($user['ch_bio'], 0);
 
 if ($user['ch_extra'] != '')
-	$forum_page['extra'] = forum_htmlencode($user['ch_extra']);
+	$forum_page['extra'] = parse_message($user['ch_extra'], 0);

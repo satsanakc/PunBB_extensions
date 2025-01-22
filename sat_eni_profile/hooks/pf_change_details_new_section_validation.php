@@ -15,12 +15,35 @@ if ($section == 'character') {
 		'WHERE'		=> 'user_id = '.$user['id']
 	);
 	$forum_db->query_build($schema);
-	foreach ($_POST['god'] as $god) {
-		$schema = array(
-			'INSERT'	=> 'user_id, god_id',
-			'INTO'		=> 'religion',
-			'VALUES'	=> strval($user['id']).', '.$god
-		);
-	$forum_db->query_build($schema);
+	if (!empty($_POST['god'])) {
+		foreach ($_POST['god'] as $god) {
+			$schema = array(
+				'INSERT'	=> 'user_id, god_id',
+				'INTO'		=> 'religion',
+				'VALUES'	=> strval($user['id']).', '.$god
+			);
+			$forum_db->query_build($schema);
+		}
 	}
+	$schema = array(
+		'INSERT'	=> 'char_id, poster_id, posted, name, race, birth, fraction, metier, gods, skills, person, bio, extra',
+		'INTO'		=> 'char_log',
+		'VALUES'	=> '\''.implode('\', \'', array(
+						$user['id'],
+						$forum_user['id'],
+						time(),
+						$forum_db->escape($form['ch_name']),
+						empty($form['ch_race_id']) ? 'NULL' : $form['ch_race_id'],
+						$form['ch_birth'],
+						empty($form['ch_fract_id']) ? 'NULL' : $form['ch_fract_id'],
+						$forum_db->escape($form['ch_metier']),
+						empty($_POST['god']) ? '' : implode(', ', $_POST['god']),
+						$forum_db->escape($form['ch_skills']),
+						$forum_db->escape($form['ch_person']),
+						$forum_db->escape($form['ch_bio']),
+						$forum_db->escape($form['ch_extra'])
+					)).'\''
+	);
+	($hook = get_hook('sat_eni_profile_log')) ? eval($hook) : null;
+	$forum_db->query_build($schema);
 }
