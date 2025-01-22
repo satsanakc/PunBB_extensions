@@ -27,3 +27,7 @@
 #display-profile strong:not(.warn):hover {
     text-decoration: underline;
 }
+
+.sig-demo {
+    position: relative;
+}
