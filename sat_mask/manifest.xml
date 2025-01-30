@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_mask</id>
+<title>Sat Mask</title>
+<description>Ролевая маска для отдельного поста</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+  
+	<install><![CDATA[
+define('SAT_MASK_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_MASK_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+  
+<hooks>
+
+	<hook id="vt_start"><![CDATA[
+define('SAT_MASK_START', 1);
+	]]></hook>
+
+	<hook id="vt_qr_get_posts"><![CDATA[
+$query['SELECT'] .= ', p.mask_name, p.mask_title, p.mask_ava, p.mask_sig';
+	]]></hook>
+
+	<hook id="vt_post_loop_start"><![CDATA[
+if (!empty($cur_post['mask_name']))
+	$cur_post['username'] = $cur_post['mask_name'];
+if (!empty($cur_post['mask_title']))
+	$cur_post['title'] = $cur_post['mask_title'];
+if (!empty($cur_post['mask_sig']))
+	$cur_post['signature'] = $cur_post['mask_sig'];
+	]]></hook>
+
+	<hook id="vt_row_pre_post_actions_merge"><![CDATA[
+if (!empty($cur_post['mask_ava']) && $forum_config['o_avatars'] == '1' && $forum_user['show_avatars'] != '0' && !(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on' && preg_match('#^[fh]ttps://#', $cur_post['mask_ava']) == 0))
+	$forum_page['author_ident']['avatar'] = '<li class="useravatar"><img src="'.$cur_post['mask_ava'].'" alt="'.$cur_post['username'].'"></li>';
+	]]></hook>
+
+	<hook id="vt_row_add_user_data_cache"><![CDATA[
+unset($user_data_cache[$cur_post['poster_id']]['author_ident']);
+	]]></hook>
+
+</hooks>
+</extension>
