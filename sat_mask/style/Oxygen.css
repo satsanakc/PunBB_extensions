@@ -1,0 +1,21 @@
+.post-actions span.post-mask {
+    float: left;
+    margin-left: 0;
+}
+
+#mask-form .sf-set {
+        padding: 0;
+}
+
+#mask-form .sf-set label span {
+    margin: 0 .5em 0 0;
+    width: auto;
+}
+
+#mask-form input[type="text"] {
+    width: 100%;
+}
+
+#mask-form .posting {
+    float: right;
+}

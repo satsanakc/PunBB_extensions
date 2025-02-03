@@ -23,6 +23,17 @@ require $ext_info['path'].'/uninstall.php';
 <hooks>
 
 	<hook id="vt_start"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+
+//$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/Russian.php';
 define('SAT_MASK_START', 1);
 	]]></hook>
 
@@ -39,13 +50,38 @@ if (!empty($cur_post['mask_sig']))
 	$cur_post['signature'] = $cur_post['mask_sig'];
 	]]></hook>
 
-	<hook id="vt_row_pre_post_actions_merge"><![CDATA[
-if (!empty($cur_post['mask_ava']) && $forum_config['o_avatars'] == '1' && $forum_user['show_avatars'] != '0' && !(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on' && preg_match('#^[fh]ttps://#', $cur_post['mask_ava']) == 0))
-	$forum_page['author_ident']['avatar'] = '<li class="useravatar"><img src="'.$cur_post['mask_ava'].'" alt="'.$cur_post['username'].'"></li>';
-	]]></hook>
-
 	<hook id="vt_row_add_user_data_cache"><![CDATA[
 unset($user_data_cache[$cur_post['poster_id']]['author_ident']);
+	]]></hook>
+
+	<hook id="po_topic_review_qr_get_topic_review_posts, sf_fn_generate_cached_search_query_qr_get_cached_hits_as_posts, sf_fn_generate_action_search_query_qr_get_user_posts"><![CDATA[
+$query['SELECT'] .= ', p.mask_name';
+	]]></hook>
+
+	<hook id="po_topic_review_row_pre_display"><![CDATA[
+if (!empty($cur_post['mask_name']))
+	$forum_page['post_ident']['byline'] = '<span class="post-byline">'.sprintf($lang_post['Post byline'], '<strong>'.forum_htmlencode($cur_post['mask_name']).'</strong>').'</span>';
+	]]></hook>
+
+	<hook id="se_results_posts_row_pre_item_ident_merge"><![CDATA[
+if (!empty($cur_set['mask_name']))
+	$forum_page['post_ident']['byline'] = '<span class="post-byline">'.sprintf((($cur_set['pid'] == $cur_set['first_post_id']) ? $lang_topic['Topic byline'] : $lang_topic['Reply byline']), '<strong>'.forum_htmlencode($cur_set['mask_name']).'</strong>').'</span>';
+	]]></hook>
+
+	<hook id="vt_row_pre_display"><![CDATA[
+require $ext_info['path'].'/hooks/vt_row_pre_display.php';
+	]]></hook>
+
+	<hook id="vt_row_pre_post_actions_merge"><![CDATA[
+if (!empty($cur_post['mask_ava']) && $forum_config['o_avatars'] == '1' && $forum_user['show_avatars'] != '0' && !(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on' && preg_match('#^[fh]ttps://#', $cur_post['mask_ava']) == 0))
+	$forum_page['author_ident']['avatar'] = '<li class="useravatar"><img src="'.$cur_post['mask_ava'].'" alt="'.forum_htmlencode($cur_post['username']).'"></li>';
+	
+if ($forum_page['is_admmod'] == 1 || $cur_post['poster_id'] == $forum_user['id'])
+	$forum_page['post_actions']['mask'] = '<span class="post-mask'.(empty($forum_page['post_actions']) ? ' first-item' : '').'"><a href="javascript://" onclick="$(this).parents(\'.post\').find(\'.entry-content > :not(.sig-content)\').toggle();$(\'html, body\').stop().animate({scrollTop: $(this).parents(\'.post\').offset().top}, 500);">'.$lang_sat_mask['button'].'</a></span>';
+	]]></hook>
+
+	<hook id="mi_new_action"><![CDATA[
+require $ext_info['path'].'/hooks/mi_new_action.php';
 	]]></hook>
 
 </hooks>
