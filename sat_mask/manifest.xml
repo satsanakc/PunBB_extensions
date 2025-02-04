@@ -28,7 +28,7 @@ if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
 else
 	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
 
-//$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+$forum_loader->add_js($ext_info['url'].'/script.js?v=2', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 
 if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
 	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
@@ -77,7 +77,7 @@ if (!empty($cur_post['mask_ava']) && $forum_config['o_avatars'] == '1' && $forum
 	$forum_page['author_ident']['avatar'] = '<li class="useravatar"><img src="'.$cur_post['mask_ava'].'" alt="'.forum_htmlencode($cur_post['username']).'"></li>';
 	
 if ($forum_page['is_admmod'] == 1 || $cur_post['poster_id'] == $forum_user['id'])
-	$forum_page['post_actions']['mask'] = '<span class="post-mask'.(empty($forum_page['post_actions']) ? ' first-item' : '').'"><a href="javascript://" onclick="$(this).parents(\'.post\').find(\'.entry-content > :not(.sig-content)\').toggle();$(\'html, body\').stop().animate({scrollTop: $(this).parents(\'.post\').offset().top}, 500);">'.$lang_sat_mask['button'].'</a></span>';
+	$forum_page['post_actions']['mask'] = '<span class="post-mask'.(empty($forum_page['post_actions']) ? ' first-item' : '').'"><a href="javascript://" onclick="maskShowForm(this)">'.$lang_sat_mask['button'].'</a></span>';
 	]]></hook>
 
 	<hook id="mi_new_action"><![CDATA[
