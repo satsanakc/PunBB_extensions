@@ -19,6 +19,10 @@ require $ext_info['path'].'/install.php';
 define('SAT_MASK_UNINSTALL', 1);
 require $ext_info['path'].'/uninstall.php';
 	]]></uninstall>
+
+	<dependencies>
+		<dependency>pun_jquery</dependency>
+	</dependencies>
   
 <hooks>
 
