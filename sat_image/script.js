@@ -4,7 +4,7 @@ var gyazo = {
   access_token: 'faDfI4tKX59trYP8z7gDOZmQ4RG36DCMMD76Z-3d51M'
 }
 
-PUNBB.env.user_id = !PUNBB.env.user_is_guest ? $('#navprofile a').attr('href').match(/id=(\d+)$/)[1] : '1';
+PUNBB.env.user_id = PUNBB.env.user_is_guest != 1 ? $('#navprofile a').attr('href').match(/id=(\d+)$/)[1] : '1';
 PUNBB.env.user_is_moder = $('#navadmin').length;
 
 function imgBut() {
