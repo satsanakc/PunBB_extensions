@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_mask</id>
+<title>Sat Draft</title>
+<description>Сохранение черновиков сообщений</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+  
+	<install><![CDATA[
+define('SAT_DRAFT_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_DRAFT_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+
+	<dependencies>
+		<dependency>pun_jquery</dependency>
+	</dependencies>
+
+<hooks>
+
+	<hook id="vt_start"><![CDATA[
+$forum_loader->add_js($ext_info['url'].'/script.js?v=2', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+
+define('SAT_DRAFT_START', 1);
+	]]></hook>
+
+</hooks>
+</extension>
