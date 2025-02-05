@@ -24,7 +24,6 @@ if (!$forum_db->table_exists('sat_drafts')) {
                 'allow_null'      => true
             )
         ),
-        'PRIMARY KEY' => array('id'),
 	'INDEXES'	=> array(
 		'uid_idx'		=> array('user_id')
 	)

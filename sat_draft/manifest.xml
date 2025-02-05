@@ -2,7 +2,7 @@
 <!DOCTYPE extension SYSTEM "ext-1.0.dtd">
 
 <extension engine="1.0">
-<id>sat_mask</id>
+<id>sat_draft</id>
 <title>Sat Draft</title>
 <description>Сохранение черновиков сообщений</description>
 <author>satsana</author>
@@ -26,10 +26,13 @@ require $ext_info['path'].'/uninstall.php';
 
 <hooks>
 
-	<hook id="vt_start"><![CDATA[
-$forum_loader->add_js($ext_info['url'].'/script.js?v=2', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
-
+	<hook id="vt_start, po_start"><![CDATA[
+$forum_loader->add_js($ext_info['url'].'/script.js?v=3', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 define('SAT_DRAFT_START', 1);
+	]]></hook>
+
+	<hook id="mi_new_action"><![CDATA[
+require $ext_info['path'].'/hooks/mi_new_action.php';
 	]]></hook>
 
 </hooks>
