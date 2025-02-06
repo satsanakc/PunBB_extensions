@@ -38,15 +38,19 @@ console.log(r);
         if (tid && PUNBB.env.savedMess.length > 0) {
           $('#post-form textarea, #brd-qpost textarea')[0].value = PUNBB.env.savedMess[PUNBB.env.savedMess.length-1].message;
         }
+        if (r.code == -3) {
+console.log(r);
+$('#post-form textarea, #brd-qpost textarea')[0].value = 'Loading error of saved messages';
+        }
       },
       error: function(r) {
 console.log(r);
+$('#post-form textarea, #brd-qpost textarea')[0].value = 'Loading error of saved messages';
       }
     });
   }
   
   function saveMessage(user, mess, topic, name) {
-    gentoken('savemess');
     let data = {
       'csrf_token': PUNBB.env.token,
       'uid': user,
@@ -62,11 +66,26 @@ console.log(r);
       url: '/misc.php?action=savemess',
       type: 'POST',
       data: data,
+      success: function(r) {
+        if (r.code == -3) {
+          gentoken('savemess');
+          clearTimeout(PUNBB.env.svmTimer);
+          PUNBB.env.svmTimer = setTimeout(saveMessage(user, mess, topic, name), 1000);
+        }
+      },
       error: function(r) {
 console.log(r);
+//	gentoken('savemess');
+        clearTimeout(PUNBB.env.svmTimer);
         PUNBB.env.svmTimer = setTimeout(saveMessage(user, mess, topic, name), 3000);
       }
     });
   }
 
+  getsavedmess(PUNBB.env.user_id, PUNBB.env.topic_id);
+  gentoken('savemess');
+  $('#post-form textarea, #brd-qpost textarea').on('input', function() {
+    clearTimeout(PUNBB.env.svmTimer);
+    PUNBB.env.svmTimer = setTimeout(saveMessage(PUNBB.env.user_id, $('#post-form textarea, #brd-qpost textarea')[0].value, PUNBB.env.topic_id), 1000);
+  });
 }
