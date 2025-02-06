@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_draft</id>
+<title>Sat Draft</title>
+<description>Сохранение черновиков сообщений</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+  
+	<install><![CDATA[
+define('SAT_DRAFT_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_DRAFT_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+
+	<dependencies>
+		<dependency>pun_jquery</dependency>
+	</dependencies>
+
+<hooks>
+
+	<hook id="vt_start, po_start"><![CDATA[
+$forum_loader->add_js($ext_info['url'].'/script.js?v=5', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+define('SAT_DRAFT_START', 1);
+	]]></hook>
+
+	<hook id="mi_new_action"><![CDATA[
+require $ext_info['path'].'/hooks/mi_new_action.php';
+	]]></hook>
+
+	<hook id="fn_add_post_end"><![CDATA[
+$query = array(
+	'DELETE'	=> 'sat_drafts',
+	'WHERE'		=> 'user_id='.$post_info['poster_id'].' AND topic_id='.$post_info['topic_id']
+);
+$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	]]></hook>
+
+</hooks>
+</extension>
