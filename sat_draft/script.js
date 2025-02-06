@@ -34,10 +34,9 @@ console.log(r);
       type: 'POST',
       data: data,
       success: function(r) {
-console.log(r);
         PUNBB.env.savedMess = r;
-        if (tid && PUNBB.env.savedMess.length == 1) {
-          $('#post-form textarea, #brd-qpost textarea')[0].value = PUNBB.env.savedMess[0].message;
+        if (tid && PUNBB.env.savedMess.length > 0) {
+          $('#post-form textarea, #brd-qpost textarea')[0].value = PUNBB.env.savedMess[PUNBB.env.savedMess.length-1].message;
         }
       },
       error: function(r) {
@@ -63,9 +62,6 @@ console.log(r);
       url: '/misc.php?action=savemess',
       type: 'POST',
       data: data,
-      success: function(r) {
-console.log(r);
-      },
       error: function(r) {
 console.log(r);
         PUNBB.env.svmTimer = setTimeout(saveMessage(user, mess, topic, name), 3000);
