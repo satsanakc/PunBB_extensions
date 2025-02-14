@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_dice</id>
+<title>Sat Dice</title>
+<description>Эмуляция бросков игральных костей</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+  
+	<install><![CDATA[
+define('SAT_DICE_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_DICE_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+
+	<dependencies>
+		<dependency>sat_bbcode</dependency>
+	</dependencies>
+
+<hooks>
+
+	<hook id="vt_start, po_start"><![CDATA[
+//$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+define('SAT_DICE_START', 1);
+	]]></hook>
+
+	<hook id="mi_new_action"><![CDATA[
+require $ext_info['path'].'/hooks/mi_new_action.php';
+	]]></hook>
+
+</hooks>
+</extension>
