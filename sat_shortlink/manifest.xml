@@ -30,14 +30,12 @@ require $ext_info['path'].'/uninstall.php';
 
 <hooks>
 
-	<hook id="sat_bbcode_add_func"><![CDATA[
-global $lang_sat_bbcode, $forum_user;
+	<hook id="ed_start, po_start, vt_start"><![CDATA[
 $forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
 	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
 else
 	require $ext_info['path'].'/lang/English.php';
-$GLOBALS['lang_sat_shortlink'] = $lang_sat_bbcode;
 	]]></hook>
 
 	<hook id="sat_bbcode_add_tags"><![CDATA[
