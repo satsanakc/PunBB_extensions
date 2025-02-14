@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_shortlink</id>
+<title>Sat Short Link</title>
+<description>Генератор коротких ссылок</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+
+	<note type="uninstall" timing="pre">
+Данные расширения будут удалены из базы! Созданные с его помощью короткие ссылки перестанут работать, восстановить их работоспособность будет невозможно.
+	</note>
+  
+	<install><![CDATA[
+define('SAT_SHORTLINK_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_SHORTLINK_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+
+	<dependencies>
+		<dependency>sat_bbcode</dependency>
+	</dependencies>
+
+<hooks>
+
+	<hook id="sat_bbcode_add_func"><![CDATA[
+global $lang_sat_bbcode, $forum_user;
+$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+$GLOBALS['lang_sat_shortlink'] = $lang_sat_bbcode;
+	]]></hook>
+
+	<hook id="sat_bbcode_add_tags"><![CDATA[
+if($forum_user['is_admmod'] == 1)
+	$sat_bbcodes['url']['onclick'] = "insertShortUrl('{$lang_sat_bbcode['urllink']}', '{$lang_sat_bbcode['urlname']}', '{$lang_sat_shortlink['reduction']}', '{$lang_sat_shortlink['error']}')";
+	]]></hook>
+
+	<hook id="in_start"><![CDATA[
+if(!empty($_GET['link'])) {
+	$query = array(
+		'SELECT'	=> 'url',
+		'FROM'		=> 'sat_shortlinks',
+		'WHERE'		=> 'link=\''.$_GET['link'].'\''
+	);
+	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	$url = $forum_db->result($result);
+	if(empty($url)) 
+		redirect(forum_link('misc.php', ''), $lang_common['Redirecting']);
+	else
+		redirect($url, $lang_common['Redirecting']);
+}
+	]]></hook>
+
+	<hook id="mi_new_action"><![CDATA[
+require $ext_info['path'].'/hooks/mi_new_action.php';
+	]]></hook>
+
+</hooks>
+</extension>
