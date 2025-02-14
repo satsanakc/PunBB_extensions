@@ -25,13 +25,14 @@ if ($action == 'getsavedmess') {
 	if (!empty($_POST['name']))
 		$query['WHERE'] .= 'save_name=\''.$forum_db->escape($_POST['name']).'\'';
 	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
-	
-	$query = array(
-		'INSERT'	=> 'save_name, user_id, topic_id, message',
-		'INTO'		=> 'sat_drafts',
-		'VALUES'	=> (empty($_POST['name']) ? 'NULL' : '\''.$forum_db->escape($_POST['name']).'\'').', '.$_POST['uid'].', '.(empty($_POST['tid']) ? 'NULL' : $_POST['tid']).', \''.$forum_db->escape($_POST['mess']).'\''
-	);
-	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	if(forum_trim($_POST['mess']) != '') {
+		$query = array(
+			'INSERT'	=> 'save_name, user_id, topic_id, message',
+			'INTO'		=> 'sat_drafts',
+			'VALUES'	=> (empty($_POST['name']) ? 'NULL' : '\''.$forum_db->escape($_POST['name']).'\'').', '.$_POST['uid'].', '.(empty($_POST['tid']) ? 'NULL' : $_POST['tid']).', \''.$forum_db->escape($_POST['mess']).'\''
+		);
+		$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	}
 	$forum_db->end_transaction();
 	$forum_db->close();
 	echo $result;
