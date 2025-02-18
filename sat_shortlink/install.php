@@ -32,3 +32,27 @@ if (!$forum_db->table_exists('sat_shortlinks')) {
     );
     $forum_db->create_table('sat_shortlinks', $schema);
 }
+
+if (!$forum_db->table_exists('sat_linksvisit')) {
+    $schema = array(
+        'FIELDS'      => array(
+            'id'		=> array(
+		'datatype'	=> 'SERIAL',
+		'allow_null'	=> false
+            ),
+            'link_id'         	=> array(
+                'datatype'        => 'INT(10) UNSIGNED',
+                'allow_null'      => false
+            ),
+            'serv'       => array(
+                'datatype'        => 'TEXT',
+                'allow_null'      => false
+            )
+        ),
+	'PRIMARY KEY'	=> array('id'),
+	'INDEXES'	=> array(
+			'link_idx'		=> array('link_id')
+	)
+    );
+    $forum_db->create_table('sat_linksvisit', $schema);
+}

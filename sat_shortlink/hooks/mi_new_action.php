@@ -1,4 +1,6 @@
 <?php
+if (!defined('FORUM')) die();
+
 if ($action == 'createlink') {
 	$linkchars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	$link = substr(str_shuffle($linkchars), 0, 6);
