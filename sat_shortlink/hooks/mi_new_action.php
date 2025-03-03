@@ -72,12 +72,16 @@ if ($action == 'createlink') {
 					'WHERE'		=> 'link_id='.$link['id']
 				);
 				$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+				$res = $forum_db->result($result);
 				
 				$forum_page['table_row'] = array();
 				$forum_page['table_row']['url'] = '<td class="tc'.count($forum_page['table_row']).'"><a href="'.$link['url'].'">'.$link['url'].'</a></td>';
 				$forum_page['table_row']['link'] = '<td class="tc'.count($forum_page['table_row']).'"><a href="'.forum_link('?link='.$link['link']).'">'.forum_link('?link='.$link['link']).'</a></td>';
 				$forum_page['table_row']['generated'] = '<td class="tc'.count($forum_page['table_row']).'">'.format_time($link['generated']).'</td>';
-				$forum_page['table_row']['visits'] = '<td class="tc'.count($forum_page['table_row']).'"><a href="'.forum_link('misc.php?action=linkvisits&lid='.$link['id']).'">'.$forum_db->result($result).'</a></td>';
+				if ($res > 0)
+					$forum_page['table_row']['visits'] = '<td class="tc'.count($forum_page['table_row']).'"><a href="'.forum_link('misc.php?action=linkvisits&lid='.$link['id']).'">'.$res.'</a></td>';
+				else
+					$forum_page['table_row']['visits'] = '<td class="tc'.count($forum_page['table_row']).'">0</td>';
 				$forum_page['table_row']['buttons'] = '<td class="tc'.count($forum_page['table_row']).'"><input type="button" title="'.$lang_sat_shortlink['copy'].'" value="&#xf0c5" name="copy" onclick="copyShortUrl(this, \''.$lang_sat_shortlink['copied'].'\')"><input type="button" title="'.$lang_sat_shortlink['delete'].'" value="&#xf2ed" name="delete" data-id="'.$link['id'].'" onclick="delShortUrl(this, \''.$lang_sat_shortlink['warning'].'\')"></td>';
 				++$forum_page['item_count'];
 ?>
@@ -113,7 +117,7 @@ if ($action == 'createlink') {
 	if(!empty($_GET['lid'])) {
 		$keys = array('REMOTE_PORT', 'REMOTE_ADDR', 'HTTP_REFERER', 'HTTP_USER_AGENT', 'HTTP_SEC_CH_UA_PLATFORM', 'HTTP_SEC_CH_UA_MOBILE', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP');
 		$query = array(
-			'SELECT'	=> 'v.id, v.serv, l.user_id, l.url',
+			'SELECT'	=> 'v.id, v.serv, l.user_id, l.url, l.user_id',
 			'FROM'		=> 'sat_linksvisit AS v',
 			'JOINS'		=> array(
 				array(
@@ -130,27 +134,28 @@ if ($action == 'createlink') {
 			$visits[] = $cur_visit;
 		}
 		
-		$forum_page['crumbs'] = array(
-			array($forum_config['o_board_title'], forum_link($forum_url['index'])),
-			array($lang_sat_shortlink['mylinks'], forum_link('misc.php?action=mylinks&uid='.$forum_user['id'])),
-			$visits[0]['url']
-		);
+		if (!empty($visits) && ($visits[0]['user_id'] == $forum_user['id'] || $forum_user['is_admmod'])) {
+			$forum_page['crumbs'] = array(
+				array($forum_config['o_board_title'], forum_link($forum_url['index'])),
+				array($lang_sat_shortlink['mylinks'], forum_link('misc.php?action=mylinks&uid='.$forum_user['id'])),
+				$visits[0]['url']
+			);
 
-		$forum_page['main_head'] = end($forum_page['crumbs']);
-		define('FORUM_PAGE', 'linkvisits');
-		require FORUM_ROOT.'header.php';
+			$forum_page['main_head'] = end($forum_page['crumbs']);
+			define('FORUM_PAGE', 'linkvisits');
+			require FORUM_ROOT.'header.php';
 		
-		// START SUBST - <!-- forum_main -->
-		ob_start();
+			// START SUBST - <!-- forum_main -->
+			ob_start();
 ?>
 		<div class="main-content">
 			<div class="ct-group">
 <?php
-		foreach ($visits as $visit) {
-			$visit['serv'] = json_decode($visit['serv']);
-			$forum_page['table_header'] = array();
-			$forum_page['table_header']['key'] = '<th class="tc'.count($forum_page['table_header']).'" scope="col">'.$lang_sat_shortlink['key'].'</th>';
-			$forum_page['table_header']['val'] = '<th class="tc'.count($forum_page['table_header']).'" scope="col">'.$lang_sat_shortlink['val'].'</th>';
+			foreach ($visits as $visit) {
+				$visit['serv'] = json_decode($visit['serv']);
+				$forum_page['table_header'] = array();
+				$forum_page['table_header']['key'] = '<th class="tc'.count($forum_page['table_header']).'" scope="col">'.$lang_sat_shortlink['key'].'</th>';
+				$forum_page['table_header']['val'] = '<th class="tc'.count($forum_page['table_header']).'" scope="col">'.$lang_sat_shortlink['val'].'</th>';
 ?>
 				<table class="sat_linkvisits">
 					<caption><?php echo format_time($visit['serv']->{'REQUEST_TIME'}) ?></caption>
@@ -161,33 +166,34 @@ if ($action == 'createlink') {
 					</thead>
 					<tbody>
 <?php
-			$forum_page['item_count'] = 0;
-			foreach ($visit['serv'] as $key => $val) { if (in_array($key, $keys)) {
-				$forum_page['table_row'] = array();
-				$forum_page['table_row']['key'] = '<td class="tc'.count($forum_page['table_row']).'">'.$key.'</td>';
-				$forum_page['table_row']['val'] = '<td class="tc'.count($forum_page['table_row']).'">'.$val.'</td>';
-				++$forum_page['item_count'];
+				$forum_page['item_count'] = 0;
+				foreach ($visit['serv'] as $key => $val) { if (in_array($key, $keys)) {
+					$forum_page['table_row'] = array();
+					$forum_page['table_row']['key'] = '<td class="tc'.count($forum_page['table_row']).'">'.$key.'</td>';
+					$forum_page['table_row']['val'] = '<td class="tc'.count($forum_page['table_row']).'">'.$val.'</td>';
+					++$forum_page['item_count'];
 ?>
 						<tr class="<?php echo ($forum_page['item_count'] % 2 != 0) ? 'odd' : 'even' ?>">
 							<?php echo implode("\n\t\t\t\t\t\t", $forum_page['table_row'])."\n" ?>
 						</tr>
 <?php
-			}}
+				}}
 ?>
 					</tbody>
 				</table>
 <?php
-		}
+			}
 ?>
 			</div>
 		</div>
 <?php
-		$tpl_temp = forum_trim(ob_get_contents());
-		$tpl_main = str_replace('<!-- forum_main -->', $tpl_temp, $tpl_main);
-		ob_end_clean();
-		// END SUBST - <!-- forum_main -->
+			$tpl_temp = forum_trim(ob_get_contents());
+			$tpl_main = str_replace('<!-- forum_main -->', $tpl_temp, $tpl_main);
+			ob_end_clean();
+			// END SUBST - <!-- forum_main -->
 
-		require FORUM_ROOT.'footer.php';
+			require FORUM_ROOT.'footer.php';
+		}
 	}
 } else if ($action == 'deletelink') {
 	$query = array(
