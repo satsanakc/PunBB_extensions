@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+<id>sat_shortlink</id>
+<title>Sat Short Link</title>
+<description>Генератор коротких ссылок</description>
+<author>satsana</author>
+<version>0.1</version>
+<minversion>1.4.2</minversion>
+<maxtestedon>1.4.6</maxtestedon>
+
+	<note type="uninstall" timing="pre">
+Данные расширения будут удалены из базы! Созданные с его помощью короткие ссылки перестанут работать, восстановить их работоспособность будет невозможно.
+	</note>
+  
+	<install><![CDATA[
+define('SAT_SHORTLINK_INSTALL', 1);
+require $ext_info['path'].'/install.php';
+	]]></install>
+	
+	<uninstall><![CDATA[
+define('SAT_SHORTLINK_UNINSTALL', 1);
+require $ext_info['path'].'/uninstall.php';
+	]]></uninstall>
+
+	<dependencies>
+		<dependency>sat_bbcode</dependency>
+	</dependencies>
+
+<hooks>
+
+	<hook id="co_modify_url_scheme"><![CDATA[
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+	]]></hook>
+
+	<hook id="ed_start, po_start, vt_start, mi_start"><![CDATA[
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+	
+$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+	]]></hook>
+
+	<hook id="hd_visit_elements"><![CDATA[
+if (!$forum_user['is_guest'])
+	$visit_links['mylinks'] = '<span id="visit-mylinks"'.(empty($visit_links) ? ' class="first-item"' : '').'><a href="'.forum_link('misc.php?action=mylinks&uid='.$forum_user['id']).'" title="'.$lang_sat_shortlink['mylinks'].'">'.$lang_sat_shortlink['mylinks'].'</a></span>';
+	]]></hook>
+
+	<hook id="sat_bbcode_add_tags"><![CDATA[
+if($forum_user['is_admmod'] == 1)
+	$sat_bbcodes['url']['onclick'] = "insertShortUrl('{$lang_sat_bbcode['urllink']}', '{$lang_sat_bbcode['urlname']}', '{$lang_sat_shortlink['reduction']}', '{$lang_sat_shortlink['error']}')";
+	]]></hook>
+
+	<hook id="in_start"><![CDATA[
+require $ext_info['path'].'/hooks/in_start.php';
+	]]></hook>
+
+	<hook id="mi_new_action"><![CDATA[
+require $ext_info['path'].'/hooks/mi_new_action.php';
+	]]></hook>
+
+</hooks>
+</extension>
