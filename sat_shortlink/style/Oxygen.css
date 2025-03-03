@@ -2,3 +2,15 @@
 #brd-shortlinks td {
     padding: 1em 0;
 }
+#brd-shortlinks .tc0 {
+    width: 50%;
+}
+#brd-shortlinks tbody [type="button"] {
+    font-family: 'Awesome';
+    font-size: 16px;
+    line-height: 28px;
+    height: 30px;
+    width: 30px;
+    margin: 10px 20px 10px 0;
+    padding: 0;
+}
