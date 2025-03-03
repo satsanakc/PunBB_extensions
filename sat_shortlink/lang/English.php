@@ -6,6 +6,7 @@ $lang_sat_shortlink = array(
 	'url'		=> 'Link',
 	'link'		=> 'Abbreviated link',
 	'generated'	=> 'Created',
+	'visits'	=> 'Visits',
 	'buttons'	=> 'Actions',
 	'copy'		=> 'Copy',
 	'copied'	=> 'The link is copied to the exchange buffer.',
@@ -14,5 +15,7 @@ $lang_sat_shortlink = array(
 	'new'		=> 'New link',
 	'address'	=> 'Enter the link address',
 	'mylinks'	=> 'My links',
-	'nolinks'	=> 'No links were found.'
+	'nolinks'	=> 'No links were found.',
+	'key'		=> 'Key',
+	'val'		=> 'Value'
 );
