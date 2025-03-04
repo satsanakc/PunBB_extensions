@@ -1,4 +1,6 @@
 <?php
+if (!defined('FORUM')) die();
+
 if ($action == 'setmask' && isset($_GET['pid'])) {
 	if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
 		require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';

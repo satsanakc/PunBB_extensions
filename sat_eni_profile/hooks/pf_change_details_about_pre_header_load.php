@@ -1,4 +1,5 @@
 <?php
+if (!defined('FORUM')) die();
 
 $disp = array(
 	'<strong class="warn" data-section="user">'.$lang_eni_profile['identity'].'</strong>',

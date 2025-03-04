@@ -27,13 +27,26 @@ require $ext_info['path'].'/uninstall.php';
 <hooks>
 
 	<hook id="vt_start, po_start"><![CDATA[
-//$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 define('SAT_DICE_START', 1);
 	]]></hook>
 
 	<hook id="mi_new_action"><![CDATA[
 require $ext_info['path'].'/hooks/mi_new_action.php';
 	]]></hook>
+
+		<hook id="sat_bbcode_add_tags"><![CDATA[
+if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
+	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
+else
+	require $ext_info['path'].'/lang/English.php';
+
+require $ext_info['path'].'/hooks/dice_tag.php';
+		]]></hook>
 
 </hooks>
 </extension>

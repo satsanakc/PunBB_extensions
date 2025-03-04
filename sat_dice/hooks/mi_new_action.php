@@ -1,4 +1,6 @@
 <?php
+if (!defined('FORUM')) die();
+
 if ($action == 'throwgen') {
 	for ($i = 0, $res = array(); $i < $_POST['num']; $i++) {
 		$res[] = mt_rand(1, $_POST['faces']);
@@ -12,7 +14,7 @@ if ($action == 'throwgen') {
 		'INTO'		=> 'sat_dice',
 		'VALUES'	=> $str
 	);
-//	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
 	$forum_db->end_transaction();
 	$forum_db->close();
 	echo $res;

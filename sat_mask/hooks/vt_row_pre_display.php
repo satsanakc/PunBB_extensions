@@ -1,4 +1,6 @@
 <?php
+if (!defined('FORUM')) die();
+
 unset($signature_cache[$cur_post['poster_id']]);
 
 if ($forum_page['is_admmod'] == 1 || $cur_post['poster_id'] == $forum_user['id']) {

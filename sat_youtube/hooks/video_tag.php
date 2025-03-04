@@ -1,4 +1,5 @@
 <?php
+if (!defined('FORUM')) die();
 
 function handle_video_tag($link) {
     if (strpos($link, 'youtube')) {

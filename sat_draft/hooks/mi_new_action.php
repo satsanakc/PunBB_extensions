@@ -1,4 +1,6 @@
 <?php
+if (!defined('FORUM')) die();
+
 if ($action == 'getsavedmess') {
 	$query = array(
 		'SELECT'	=> '*',

@@ -124,6 +124,11 @@ if (!$forum_db->table_exists('sat_dice_templ')) {
 
 $diceTempl = array(
 	array(
+		'name'	=> '0/1',
+		'faces'	=> '2',
+		'dice_mod' => '-1'
+	),
+	array(
 		'name'	=> 'd2',
 		'faces'	=> '2'
 	),
