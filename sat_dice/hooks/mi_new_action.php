@@ -10,7 +10,7 @@ if ($action == 'throwgen') {
 		.= ', '.$_POST['diff'].', '.$_POST['min'].', '.$_POST['max'].', '.$_POST['sum']
 		.= ", '".$forum_db->escape($_POST['desc'])."', '[".implode(', ', $res)."]'";
 	$query = array(
-		'INSERT'	=> 'thrown, user_id, topic_id, post_id, num, faces, dice_mod, sum_mod, diff, min, max, sum, desc, res',
+		'INSERT'	=> 'thrown, user_id, topic_id, post_id, num, faces, dice_mod, sum_mod, diff, min, max, sum, descr, res',
 		'INTO'		=> 'sat_dice',
 		'VALUES'	=> $str
 	);

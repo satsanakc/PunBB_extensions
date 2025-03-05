@@ -5,9 +5,9 @@ if (!$forum_db->table_exists('sat_dice')) {
     $schema = array(
         'FIELDS'      => array(
             'id'		=> array(
-		'datatype'	=> 'SERIAL',
-		'allow_null'	=> false
-            ),
+			'datatype'	=> 'SERIAL',
+			'allow_null'	=> false
+	    ),
             'thrown'         	=> array(
                 'datatype'        => 'INT(10) UNSIGNED',
                 'allow_null'      => false
@@ -56,14 +56,13 @@ if (!$forum_db->table_exists('sat_dice')) {
                 'datatype'        => 'TINYINT(1)',
                 'allow_null'      => true
             ),
-            'desc'       => array(
+            'descr'       => array(
                 'datatype'        => 'TEXT',
                 'allow_null'      => true
             ),
             'res'       => array(
                 'datatype'        => 'TEXT',
-                'allow_null'      => false,
-		'default'         => '[]'
+                'allow_null'      => false
             )
         ),
 	'PRIMARY KEY'	=> array('id'),
@@ -112,7 +111,7 @@ if (!$forum_db->table_exists('sat_dice_templ')) {
                 'datatype'        => 'TINYINT(1)',
                 'allow_null'      => true
             ),
-            'desc'       => array(
+            'descr'       => array(
                 'datatype'        => 'TEXT',
                 'allow_null'      => true
             )
@@ -175,9 +174,9 @@ foreach ($diceTempl as $val) {
 		'INTO'		=> 'sat_dice_templ',
 		'VALUES'	=> strval($i).", '".$val['name']."', ".$val['faces']
 	);
-	if(!empty($val['dice_mod']) {
+	if(!empty($val['dice_mod'])) {
 		$schema['INSERT'] .= ', dice_mod';
-		$schema['VALUES'] .= ', '.$val['dice_mod']';
+		$schema['VALUES'] .= ', '.$val['dice_mod'];
 	}
 	$forum_db->query_build($schema);
 }
