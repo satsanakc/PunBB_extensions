@@ -1,0 +1,8 @@
+#bbcode_dice p:not(#sat_dice_show_row) {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}

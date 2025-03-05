@@ -27,7 +27,12 @@ require $ext_info['path'].'/uninstall.php';
 <hooks>
 
 	<hook id="vt_start, po_start"><![CDATA[
-$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
+	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
+else
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+
+$forum_loader->add_js($ext_info['url'].'/script.js?v=1', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 define('SAT_DICE_START', 1);
 	]]></hook>
 
