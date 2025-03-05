@@ -1,6 +1,8 @@
 <?php
 if (!defined('FORUM')) die();
 
+global $forum_db;
+
 $query = array(
 	'SELECT'	=> 'id, name',
 	'FROM'		=> 'sat_dice_templ',
