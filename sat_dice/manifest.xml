@@ -39,14 +39,14 @@ define('SAT_DICE_START', 1);
 require $ext_info['path'].'/hooks/mi_new_action.php';
 	]]></hook>
 
-		<hook id="sat_bbcode_add_tags"><![CDATA[
+	<hook id="sat_bbcode_add_tags"><![CDATA[
 if (file_exists($ext_info['path'].'/lang/'.$forum_user['language'].'.php'))
 	require $ext_info['path'].'/lang/'.$forum_user['language'].'.php';
 else
 	require $ext_info['path'].'/lang/English.php';
 
 require $ext_info['path'].'/hooks/dice_tag.php';
-		]]></hook>
+	]]></hook>
 
 </hooks>
 </extension>
