@@ -32,7 +32,7 @@ if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
 else
 	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
 
-$forum_loader->add_js($ext_info['url'].'/script.js?v=1', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+$forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 define('SAT_DICE_START', 1);
 	]]></hook>
 
@@ -47,6 +47,14 @@ else
 	require $ext_info['path'].'/lang/English.php';
 
 require $ext_info['path'].'/hooks/dice_tag.php';
+	]]></hook>
+
+	<hook id="fn_add_post_start, ed_pre_post_edited"><![CDATA[
+require $ext_info['path'].'/hooks/fn_add_post_start.php';
+	]]></hook>
+
+	<hook id="fn_add_post_end, ed_pre_redirect"><![CDATA[
+require $ext_info['path'].'/hooks/fn_add_post_end.php';
 	]]></hook>
 
 </hooks>

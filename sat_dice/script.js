@@ -8,8 +8,8 @@ function diceRoll() {
   str += +$('#bbcode_dice [name="min"]')[0].checked + ',';
   str += +$('#bbcode_dice [name="max"]')[0].checked + ',';
   str += +$('#bbcode_dice [name="sum"]')[0].checked + ',';
-  str += $('#bbcode_dice [name="desc"]').val() + ']';
-  PUNBB.pun_bbcode.insert_text('', str);
+  str += $('#bbcode_dice [name="desc"]').val().replace('[', '&#91;').replace(']', '&#93;') + ']';
+  PUNBB.pun_bbcode.insert_text(str, '');
   $('#bbcode_dice').hide();
 }
 

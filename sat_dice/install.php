@@ -16,10 +16,6 @@ if (!$forum_db->table_exists('sat_dice')) {
                 'datatype'        => 'INT(10) UNSIGNED',
                 'allow_null'      => false
             ),
-            'topic_id'         	=> array(
-                'datatype'        => 'INT(10) UNSIGNED',
-                'allow_null'      => false
-            ),
             'post_id'         	=> array(
                 'datatype'        => 'INT(10) UNSIGNED',
                 'allow_null'      => true

@@ -20,7 +20,7 @@ $forum_page['diceform_row']['faces'] = '<p id="sat_dice_faces_row">'.$lang_sat_d
 foreach ($dices as $dice) {
 	$forum_page['diceform_row']['faces'] .= '<option value="'.$dice['id'].'">'.$dice['name'].'</option>';
 }
-$forum_page['diceform_row']['faces'] .= '<option value="">--</option></select></p>';
+$forum_page['diceform_row']['faces'] .= '<option value="0">--</option></select></p>';
 $forum_page['diceform_row']['afaces'] = '<p id="sat_dice_afaces_row">'.$lang_sat_dice['afaces'].' <input name="afaces" type="number" min="1" max="10000" value="1"></p>';
 $forum_page['diceform_row']['mod'] = '<p id="sat_dice_mod_row">'.$lang_sat_dice['mod'].' <input name="mod" type="number" value="0"></p>';
 $forum_page['diceform_row']['diff'] = '<p id="sat_dice_diff_row" class="extra">'.$lang_sat_dice['diff'].' <input name="diff" type="number" value="0"></p>';
