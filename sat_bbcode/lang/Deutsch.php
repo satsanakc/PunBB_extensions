@@ -46,4 +46,5 @@ $lang_sat_bbcode = array(
 	'*'		=>	'Artikel auflisten',
 	'smile'		=>	'Emoticons',
 	'cc'		=>	'Kopieren Sie den Code',
-	'urlconf'	=>	'Der Link führt zu einer Ressource eines Drittanbieters. Sind Sie sicher, dass Sie es besuchen möchten? Die Projektleitung ist nicht verantwortlich für mögliche Folgen.');
+	'urlconf'	=>	'Der Link führt zu einer Ressource eines Drittanbieters. Sind Sie sicher, dass Sie es besuchen möchten? Die Projektleitung ist nicht verantwortlich für mögliche Folgen.'
+);

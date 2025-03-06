@@ -21,7 +21,7 @@
 if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
 	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
 else
-	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css', array('type' => 'url', 'media' => 'screen'));
+	$forum_loader->add_css($ext_info['url'].'/style/Oxygen.css?v=1', array('type' => 'url', 'media' => 'screen'));
 
 $forum_loader->add_js($ext_info['url'].'/js/pun_bbcode.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 $forum_loader->add_js($ext_info['url'].'/js/sat_bbcode.js', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));

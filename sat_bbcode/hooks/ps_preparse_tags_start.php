@@ -6,7 +6,6 @@ foreach ($sat_bbcodes as $key => $val) {
 	if(isset($val['pattern']) && isset($val['replace'])) {
 		if(!isset($val['endtag']) || ($val['endtag']) == true)
 			$tags[] = $tags_opened[] = $tags_closed[] = $key;
-		else	$tags[] = $key;
 		if(isset($val['nesting']) && is_int($val['nesting']))
 			$tags_nested[$key] = $val['nesting'];
 		if(!empty($val['ignore'])) $tags_ignore[] = $key;

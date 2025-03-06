@@ -344,3 +344,13 @@ abbr::after {
 del {
     text-decoration: line-through;
 }
+
+.bbcont fieldset {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.bbcont .frm-buttons {
+    margin: 0 !important;
+    padding: 0 !important;
+}
