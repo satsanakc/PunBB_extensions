@@ -2,6 +2,7 @@
 if (!defined('FORUM')) die();
 
 function throwgen($m) {
+	global $forum_db;
 	$m[10] = 0;
 	if ($m[2] != '0') {
 		$query = array(
@@ -31,8 +32,8 @@ function throwgen($m) {
 }
 
 if (empty($post_info))
-	$post_info = arrey();
-$post_info['dice'] = arrey();
+	$post_info = array();
+$post_info['dice'] = array();
 $re = '#\[roll=(\d+),(\d+),(\d+),(-?\d+),(-?\d+),([01]),([01]),([01]),([^\]]*?)]#';
 if (empty($post_info['message']))
  	$message = preg_replace_callback($re, 'throwgen', $message);

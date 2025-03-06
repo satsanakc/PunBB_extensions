@@ -65,7 +65,6 @@ if (!$forum_db->table_exists('sat_dice')) {
 	'INDEXES'	=> array(
 			'time_idx'		=> array('thrown'),
 			'uid_idx'		=> array('user_id'),
-			'tid_idx'		=> array('topic_id'),
 			'pid_idx'		=> array('post_id')
 	)
     );
