@@ -2,7 +2,7 @@
 if (!defined('FORUM')) die();
 
 function throwgen($m) {
-	global $forum_db;
+	global $forum_db, $post_info;
 	$m[10] = 0;
 	if ($m[2] != '0') {
 		$query = array(

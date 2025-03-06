@@ -56,7 +56,8 @@ $pattern = $replace = $pattern_callback = $replace_callback = array();
 
 		<hook id="ps_parse_message_end"><![CDATA[
 $text = preg_replace('#<p [^>]*></p>#i', '', $text);
-$text = preg_replace('#(<[^/][\s\S]*>)</p>#i', '$1', $text);
+//$text = preg_replace('#(<[^/][\s\S]*>)</p>#i', '$1', $text);
+$text = preg_replace('#<br ?/?></p>#i', '</p>', $text);
 $text = preg_replace('#<p>(</[\s\S]+>)#i', '$1', $text);
 		]]></hook>
 

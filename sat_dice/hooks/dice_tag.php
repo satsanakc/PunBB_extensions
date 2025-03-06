@@ -35,7 +35,7 @@ $forum_page['diceform_button']['extra'] = '<span id="sat_dice_extra_but" class="
 
 function handle_dice_tag() {
 	($hook = get_hook('sat_dice_tag_end')) ? eval($hook) : null;
-	return '<p><div class="quotebox"><blockquote><p>[dice]</p></blockquote></div></p>';
+	return '</p><div class="quotebox"><blockquote><p>[dice]</p></blockquote></div><p>';
 }
 
 $sat_bbcodes['dice'] = array(

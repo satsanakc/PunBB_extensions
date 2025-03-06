@@ -26,7 +26,7 @@ require $ext_info['path'].'/uninstall.php';
 
 <hooks>
 
-	<hook id="vt_start, po_start, ed_start"><![CDATA[
+	<hook id="hd_head"><![CDATA[
 if (file_exists($ext_info['path'].'/style/'.$forum_user['style'].'.css'))
 	$forum_loader->add_css($ext_info['url'].'/style/'.$forum_user['style'].'.css', array('type' => 'url', 'media' => 'screen'));
 else
