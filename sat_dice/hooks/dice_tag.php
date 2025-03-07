@@ -34,10 +34,31 @@ $forum_page['diceform_button']['extra'] = '<span id="sat_dice_extra_but" class="
 ($hook = get_hook('sat_dice_form_modify')) ? eval($hook) : null;
 
 function handle_dice_tag() {
+	global $cur_post, $forum_db;
+	if (!array_key_exists('dice', $cur_post)) {
+		$query = array(
+			'SELECT'	=> '*',
+			'FROM'		=> 'sat_dice',
+			'WHERE'		=> 'post_id='.$cur_post['id'],
+			'ORDER BY'	=> 'id'
+		);
+//		$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+		$cur_post['dice'] = array();
+		while ($dice = $forum_db->fetch_assoc($result)) {
+			$cur_post['dice'][] = $dice;
+		}
+		$cur_post['dice_conter'] = 0;
+	}
 	($hook = get_hook('sat_dice_tag_end')) ? eval($hook) : null;
-	return '</p><div class="quotebox"><blockquote><p>[dice]</p></blockquote></div><p>';
+	if (empty($cur_post['dice'][$cur_post['dice_conter']])) {
+		return '</p><div class="quotebox"><blockquote><p>[dice]</p></blockquote></div><p>';
+	} else {
+		$cur_post['dice_conter']++;
+		return '</p><div class="quotebox"><blockquote><p>'.json_encode($cur_post['dice'][$cur_post['dice_conter'] - 1]).'</p></blockquote></div><p>';
+	}
 }
 
+$sat_dice = array();
 $sat_bbcodes['dice'] = array(
 	'title'		=>	$lang_sat_dice['title'],
 	'value'		=>	'&#xf522',

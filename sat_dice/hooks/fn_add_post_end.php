@@ -1,11 +1,10 @@
 <?php
 if (!defined('FORUM')) die();
 
-if (empty($pid))
-	$pid = empty($new_pid) ? $id : $new_pid;
-foreach ($post_info['dice'] as $m) {
+$pid = empty($new_pid) ? $id : $new_pid;
+foreach ($GLOBALS['sat_dice_in_current_post'] as $m) {
 	for ($i = 0, $res = array(); $i < $m[1]; $i++) {
-		$res[] = mt_rand(1, $_POST['faces']);
+		$res[] = mt_rand(1, $m[3]);
 	}
 	$str = strval(time()).', '.$forum_user['id'].', '.$pid
 		.= ', '.$m[1].', '.$m[3].', '.$m[10].', '.$m[4]
