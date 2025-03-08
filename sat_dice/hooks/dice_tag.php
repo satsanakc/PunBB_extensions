@@ -42,7 +42,7 @@ function handle_dice_tag() {
 			'WHERE'		=> 'post_id='.$cur_post['id'],
 			'ORDER BY'	=> 'id'
 		);
-//		$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+		$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
 		$cur_post['dice'] = array();
 		while ($dice = $forum_db->fetch_assoc($result)) {
 			$cur_post['dice'][] = $dice;
