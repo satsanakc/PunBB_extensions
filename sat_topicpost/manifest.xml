@@ -94,7 +94,7 @@ $post_info['pinned'] = isset($_POST['pinned']) ? 1 : 0;
 	<hook id="po_pre_optional_fieldset, ed_pre_checkbox_display"><![CDATA[
 $forum_page['checkboxes']['hidden_author'] = '<div class="mf-item"><span class="fld-input"><input type="checkbox" id="fld'.(++$forum_page['fld_count']).'" name="hidden_author" value="1" '.((isset($_POST['hidden_author']) || (isset($cur_post) && $cur_post['hidden'] == '1' && !isset($_POST['form_sent']))) ? 'checked="checked" ' : '').'/></span> <label for="fld'.$forum_page['fld_count'].'">'.$lang_sat_topicpost['hidden_author'].'</label></div>';
 
-if ($can_edit_subject || $fid) {
+if (!empty($can_edit_subject) || !empty($fid)) {
 	$forum_page['checkboxes']['pinned'] = '<div class="mf-item"><span class="fld-input"><input type="checkbox" id="fld'.(++$forum_page['fld_count']).'" name="pinned" value="1" '.((isset($_POST['pinned']) || (isset($cur_post) && $cur_post['pinned'] == '1' && !isset($_POST['form_sent']))) ? 'checked="checked" ' : '').'/></span> <label for="fld'.$forum_page['fld_count'].'">'.$lang_sat_topicpost['pinned'].'</label></div>';
 }
 	]]></hook>
