@@ -14,5 +14,6 @@ $lang_sat_dice = array(
 	'max'		=>	'maximum,',
 	'sum'		=>	'sum.',
 	'throw'		=>	'Throw dice!',
-	'extra'		=>	'Additionally'
+	'extra'		=>	'Additionally',
+	'nodice'	=>	'There is no throw of dice for display.'
 );

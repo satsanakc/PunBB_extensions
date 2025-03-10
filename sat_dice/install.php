@@ -5,8 +5,8 @@ if (!$forum_db->table_exists('sat_dice')) {
     $schema = array(
         'FIELDS'      => array(
             'id'		=> array(
-			'datatype'	=> 'SERIAL',
-			'allow_null'	=> false
+		'datatype'	=> 'SERIAL',
+		'allow_null'	=> false
 	    ),
             'thrown'         	=> array(
                 'datatype'        => 'INT(10) UNSIGNED',
@@ -120,7 +120,10 @@ $diceTempl = array(
 	array(
 		'name'	=> '0/1',
 		'faces'	=> '2',
-		'dice_mod' => '-1'
+		'dice_mod' => '-1',
+		'min' => '0',
+		'max' => '0',
+		'sum' => '0'
 	),
 	array(
 		'name'	=> 'd2',
@@ -172,6 +175,18 @@ foreach ($diceTempl as $val) {
 	if(!empty($val['dice_mod'])) {
 		$schema['INSERT'] .= ', dice_mod';
 		$schema['VALUES'] .= ', '.$val['dice_mod'];
+	}
+	if(isset($val['min'])) {
+		$schema['INSERT'] .= ', min';
+		$schema['VALUES'] .= ', '.$val['min'];
+	}
+	if(isset($val['max'])) {
+		$schema['INSERT'] .= ', max';
+		$schema['VALUES'] .= ', '.$val['max'];
+	}
+	if(isset($val['sum'])) {
+		$schema['INSERT'] .= ', sum';
+		$schema['VALUES'] .= ', '.$val['sum'];
 	}
 	$forum_db->query_build($schema);
 }

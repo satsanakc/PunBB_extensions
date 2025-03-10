@@ -6,3 +6,59 @@
     -webkit-justify-content: space-between;
     justify-content: space-between;
 }
+
+.dicebox .citetime {
+    float: right;
+    margin-left: 1em;
+    font-size: .8em;
+}
+
+.dicebox cite {
+    text-align: left;
+    display: block;
+}
+
+.dicebox blockquote span:not(:last-of-type)::after {
+    content: ', ';
+}
+
+.dicebox blockquote .sum span:not(:last-of-type)::after {
+    content: ' + ';
+}
+
+.dicebox blockquote .d01 span:not(:last-of-type)::after {
+    content: '';
+}
+
+.dicebox blockquote .fate span {
+    font-size: 0;
+}
+
+.dicebox blockquote .fate span::after {
+    font-size: 18px;
+    display: inline-block;
+    border: 2px solid;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 6px;
+    box-shadow: 2px -2px 0;
+}
+
+.dicebox blockquote .fate span.res1::after {
+    content: '\2796';
+}
+
+.dicebox blockquote .fate span.res2::after {
+    content: '\00a0';
+    padding: 2px 12px;
+}
+
+.dicebox blockquote .fate span.res3::after {
+    content: '\2795';
+}
+
+img.citeava {
+    height: 24px;
+    margin-right: 0.5em;
+    float: left;
+}

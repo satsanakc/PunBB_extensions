@@ -9,7 +9,11 @@
 <version>0.1</version>
 <minversion>1.4.2</minversion>
 <maxtestedon>1.4.6</maxtestedon>
-  
+
+	<note type="uninstall" timing="pre">
+Все совершенные ранее броски будут удалены безвозвратно!
+	</note>
+
 	<install><![CDATA[
 define('SAT_DICE_INSTALL', 1);
 require $ext_info['path'].'/install.php';
@@ -55,6 +59,10 @@ require $ext_info['path'].'/hooks/fn_add_post_start.php';
 
 	<hook id="fn_add_post_end, ed_pre_redirect"><![CDATA[
 require $ext_info['path'].'/hooks/fn_add_post_end.php';
+	]]></hook>
+
+	<hook id="dl_qr_get_post_info"><![CDATA[
+$query['SELECT'] .= ', p.id';
 	]]></hook>
 
 </hooks>
