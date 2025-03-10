@@ -9,8 +9,12 @@
 <version>0.1.2</version>
 <minversion>1.4.2</minversion>
 <maxtestedon>1.4.6</maxtestedon>
-  
-  <install><![CDATA[
+
+	<note type="uninstall" timing="pre">
+Анкеты персонажей будут удалены безвозвратно! Восстановление будет невозможно.
+	</note>
+
+	<install><![CDATA[
 define('SAT_ENI_PROFILE_INSTALL', 1);
 require $ext_info['path'].'/install.php';
 	]]></install>
