@@ -1,7 +1,8 @@
 <?php
 if (!defined('FORUM')) die();
 
-unset($signature_cache[$cur_post['poster_id']]);
+if (!empty($signature_cache) && !empty($signature_cache[$cur_post['poster_id']]))
+	unset($signature_cache[$cur_post['poster_id']]);
 
 if ($forum_page['is_admmod'] == 1 || $cur_post['poster_id'] == $forum_user['id']) {
 	$cur_post['form_action'] = forum_link('misc.php?action=setmask&amp;pid=$1', $cur_post['id']);
