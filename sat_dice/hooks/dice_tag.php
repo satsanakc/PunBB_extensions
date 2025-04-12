@@ -37,25 +37,27 @@ function handle_dice_tag() {
 	global $cur_post, $forum_db, $forum_config, $base_url, $lang_sat_dice;
 	if (empty($cur_post)) {
 		$cur_post = array();
-		$cur_post['id'] = intval($cur_set['pid']);
+		$cur_post['id'] = !empty($cur_set) ? intval($cur_set['pid']) : 0;
 	}
 	if (!array_key_exists('dice', $cur_post)) {
-		$query = array(
-			'SELECT'	=> 'd.*, u.username, u.avatar',
-			'FROM'		=> 'sat_dice AS d',
-			'WHERE'		=> 'd.post_id='.$cur_post['id'],
-			'ORDER BY'	=> 'd.id',
-			'JOINS'		=> array(
-				array(
-					'INNER JOIN'	=> 'users AS u',
-					'ON'		=> 'u.id=d.user_id'
-				)
-			)
-		);
-		$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
 		$cur_post['dice'] = array();
-		while ($dice = $forum_db->fetch_assoc($result)) {
-			$cur_post['dice'][] = $dice;
+		if (!empty($cur_post['id'])) {
+			$query = array(
+				'SELECT'	=> 'd.*, u.username, u.avatar',
+				'FROM'		=> 'sat_dice AS d',
+				'WHERE'		=> 'd.post_id='.$cur_post['id'],
+				'ORDER BY'	=> 'd.id',
+				'JOINS'		=> array(
+					array(
+						'INNER JOIN'	=> 'users AS u',
+						'ON'		=> 'u.id=d.user_id'
+					)
+				)
+			);
+			$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+			while ($dice = $forum_db->fetch_assoc($result)) {
+				$cur_post['dice'][] = $dice;
+			}
 		}
 		$cur_post['dice_conter'] = 0;
 	}
