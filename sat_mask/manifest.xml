@@ -103,14 +103,20 @@ if ($cur_forum['last_post'] != '') {
 	]]></hook>
 
 	<hook id="vf_qr_get_topics"><![CDATA[
-$query['SELECT'] .= ', pm.mask_name';
+$query['SELECT'] .= ', pl.mask_name, ps.mask_name AS s_mask_name';
 $query['JOINS'][]	= array(
-	'LEFT JOIN'		=> 'posts AS pm',
-	'ON'			=> 'pm.id=t.last_post_id'
+	'LEFT JOIN'		=> 'posts AS pl',
+	'ON'			=> 'pl.id=t.last_post_id'
+);
+$query['JOINS'][]	= array(
+	'LEFT JOIN'		=> 'posts AS ps',
+	'ON'			=> 'ps.id=t.first_post_id'
 );
 	]]></hook>
 
-	<hook id="vf_topic_loop_normal_topic_pre_item_nav_merge"><![CDATA[
+	<hook id="vf_topic_loop_start"><![CDATA[
+if (!empty($cur_topic['s_mask_name']))
+	$cur_topic['poster'] = $cur_topic['s_mask_name'];
 if (!empty($cur_topic['mask_name']))
 	$cur_topic['last_poster'] = $cur_topic['mask_name'];
 	]]></hook>
