@@ -102,5 +102,18 @@ if ($cur_forum['last_post'] != '') {
 }
 	]]></hook>
 
+	<hook id="vf_qr_get_topics"><![CDATA[
+$query['SELECT'] .= ', pm.mask_name';
+$query['JOINS'][]	= array(
+	'LEFT JOIN'		=> 'posts AS pm',
+	'ON'			=> 'pm.id=t.last_post_id'
+);
+	]]></hook>
+
+	<hook id="vf_topic_loop_normal_topic_pre_item_nav_merge"><![CDATA[
+if (!empty($cur_topic['mask_name']))
+	$cur_topic['last_poster'] = $cur_topic['mask_name'];
+	]]></hook>
+
 </hooks>
 </extension>
