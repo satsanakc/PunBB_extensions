@@ -84,7 +84,7 @@ console.log(r);
 
   getsavedmess(PUNBB.env.user_id, PUNBB.env.topic_id);
   gentoken('savemess');
-  $('#post-form textarea, #brd-qpost textarea').on('input', function() {
+  $('#post-form textarea, #brd-qpost textarea').on('input focus', function() {
     clearTimeout(PUNBB.env.svmTimer);
     PUNBB.env.svmTimer = setTimeout(saveMessage(PUNBB.env.user_id, $('#post-form textarea, #brd-qpost textarea')[0].value, PUNBB.env.topic_id), 1000);
   });

@@ -27,7 +27,7 @@ require $ext_info['path'].'/uninstall.php';
 <hooks>
 
 	<hook id="vt_start, po_start"><![CDATA[
-$forum_loader->add_js($ext_info['url'].'/script.js?v=5', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
+$forum_loader->add_js($ext_info['url'].'/script.js?v=6', array('type' => 'url', 'group' => FORUM_JS_GROUP_COUNTER));
 define('SAT_DRAFT_START', 1);
 	]]></hook>
 
