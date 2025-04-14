@@ -36,7 +36,7 @@ $query['SELECT'] .= ', t.pinned';
 	<hook id="vt_qr_get_posts"><![CDATA[
 $query['SELECT'] .= ', p.hidden_author';
 if ($cur_topic['pinned'] > 0 && $posts_id[0] !== $cur_topic['pinned']) {
-	array_unshift($posts_id, $cur_topic['pinned']);
+	array_unshift($posts_id, $cur_topic['first_post_id']);
 	$query['WHERE']	= 'p.id IN ('.implode(',', $posts_id).')';
 }
 	]]></hook>
