@@ -88,5 +88,19 @@ if ($forum_page['is_admmod'] == 1 || $cur_post['poster_id'] == $forum_user['id']
 require $ext_info['path'].'/hooks/mi_new_action.php';
 	]]></hook>
 
+	<hook id="in_normal_row_pre_item_subject_merge"><![CDATA[
+if ($cur_forum['last_post'] != '') {
+	$query = array(
+		'SELECT'	=> 'mask_name',
+		'FROM'		=> 'posts',
+		'WHERE'		=> 'id='.$cur_forum['last_post_id']
+	);
+	$res = $forum_db->query_build($query) or error(__FILE__, __LINE__);
+	$mask_name = $forum_db->result($res);
+	if(!empty($mask_name))
+		$cur_forum['last_poster'] = $mask_name;
+}
+	]]></hook>
+
 </hooks>
 </extension>
