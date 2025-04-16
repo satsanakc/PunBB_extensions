@@ -88,30 +88,40 @@ if ($forum_page['is_admmod'] == 1 || $cur_post['poster_id'] == $forum_user['id']
 require $ext_info['path'].'/hooks/mi_new_action.php';
 	]]></hook>
 
-	<hook id="in_normal_row_pre_item_subject_merge"><![CDATA[
-if ($cur_forum['last_post'] != '') {
-	$query = array(
-		'SELECT'	=> 'mask_name',
-		'FROM'		=> 'posts',
-		'WHERE'		=> 'id='.$cur_forum['last_post_id']
-	);
-	$res = $forum_db->query_build($query) or error(__FILE__, __LINE__);
-	$mask_name = $forum_db->result($res);
-	if(!empty($mask_name))
-		$cur_forum['last_poster'] = $mask_name;
-}
+	<hook id="in_qr_get_cats_and_forums"><![CDATA[
+$query['SELECT'] .= ', p.mask_name';
+$query['JOINS'][0][]	= array(
+	'LEFT JOIN'		=> 'posts AS p',
+	'ON'			=> 'p.id=f.last_post_id'
+);
 	]]></hook>
 
-	<hook id="vf_qr_get_topics"><![CDATA[
-$query['SELECT'] .= ', pl.mask_name, ps.mask_name AS s_mask_name';
+	<hook id="sf_fn_generate_action_search_query_qr_get_forum_subscriptions"><![CDATA[
+$query['SELECT'] .= ', p.mask_name';
 $query['JOINS'][]	= array(
-	'LEFT JOIN'		=> 'posts AS pl',
-	'ON'			=> 'pl.id=t.last_post_id'
+	'LEFT JOIN'		=> 'posts AS p',
+	'ON'			=> 'p.id=f.last_post_id'
 );
-$query['JOINS'][]	= array(
-	'LEFT JOIN'		=> 'posts AS ps',
-	'ON'			=> 'ps.id=t.first_post_id'
-);
+	]]></hook>
+
+	<hook id="vf_qr_get_topics,
+		sf_fn_generate_action_search_query_qr_get_new,
+		sf_fn_generate_action_search_query_qr_get_recent,
+		sf_fn_generate_action_search_query_qr_get_user_topics,
+		sf_fn_generate_action_search_query_qr_get_subscriptions,
+		sf_fn_generate_action_search_query_qr_get_unanswered,
+		sf_fn_generate_cached_search_query_qr_get_cached_hits_as_topics"><![CDATA[
+require $ext_info['path'].'/hooks/fn_generate_action_search_query.php';
+	]]></hook>
+
+	<hook id="in_normal_row_pre_item_subject_merge"><![CDATA[
+if (!empty($cur_forum['mask_name']))
+	$cur_forum['last_poster'] = $cur_forum['mask_name'];
+	]]></hook>
+
+	<hook id="se_results_forums_row_normal_pre_item_subject_merge"><![CDATA[
+if (!empty($cur_set['mask_name']))
+	$cur_set['last_poster'] = $cur_set['mask_name'];
 	]]></hook>
 
 	<hook id="vf_topic_loop_start"><![CDATA[
@@ -119,6 +129,13 @@ if (!empty($cur_topic['s_mask_name']))
 	$cur_topic['poster'] = $cur_topic['s_mask_name'];
 if (!empty($cur_topic['mask_name']))
 	$cur_topic['last_poster'] = $cur_topic['mask_name'];
+	]]></hook>
+
+	<hook id="se_results_topics_row_pre_item_nav_merge"><![CDATA[
+if (!empty($cur_set['s_mask_name']))
+	$cur_set['poster'] = $cur_set['s_mask_name'];
+if (!empty($cur_set['mask_name']))
+	$cur_set['last_poster'] = $cur_set['mask_name'];
 	]]></hook>
 
 </hooks>
