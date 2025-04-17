@@ -41,6 +41,10 @@ else
 define('SAT_MASK_START', 1);
 	]]></hook>
 
+	<hook id="po_start"><![CDATA[
+define('SAT_MASK_START', 1);
+	]]></hook>
+
 	<hook id="vt_qr_get_posts"><![CDATA[
 $query['SELECT'] .= ', p.mask_name, p.mask_title, p.mask_ava, p.mask_sig';
 	]]></hook>

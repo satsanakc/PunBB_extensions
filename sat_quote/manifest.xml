@@ -31,6 +31,13 @@ $forum_loader->add_js($ext_info['url'].'/script.js', array('type' => 'url', 'gro
 require $ext_info['path'].'/hooks/po_qr_get_quote.php';
 	]]></hook>
 
+	<hook id="po_modify_quote_info"><![CDATA[
+if (defined('SAT_MASK_START') && !empty($quote_info['mask_name']))
+	$quote_info['poster'] = $quote_info['mask_name'];
+if ($forum_config['p_message_bbcode'] == '1')
+	$quote_info['poster'] = $quote_info['poster'].' post_id='.$qid.' time='.$quote_info['posted'].' user_id='.$quote_info['poster_id'];
+	]]></hook>
+
 	<hook id="sat_bbcode_add_tags"><![CDATA[
 require $ext_info['path'].'/hooks/sat_bbcode_add_tags.php';
 	]]></hook>

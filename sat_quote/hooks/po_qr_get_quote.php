@@ -3,16 +3,12 @@ if (!defined('FORUM')) die();
 
 if(isset($_GET['satquote'])) {
 	$query = array(
-		'SELECT'	=> 'p.poster_id, p.posted, p.message, u.username AS poster, u.avatar',
+		'SELECT'	=> 'p.poster_id, p.posted, p.message, p.poster',
 		'FROM'		=> 'posts AS p',
-		'WHERE'		=> 'p.id='.$qid.' AND topic_id='.$tid,
-		'JOINS'		=> array(
-			array(
-				'INNER JOIN'	=> 'users AS u',
-				'ON'		=> 'u.id=p.poster_id'
-			)
-		)
+		'WHERE'		=> 'p.id='.$qid.' AND topic_id='.$tid
 	);
+	if(defined('SAT_MASK_START'))
+		$query['SELECT'] .= ', p.mask_name';
 
 	$result = $forum_db->query_build($query) or error(__FILE__, __LINE__);
 	$quote_info = $forum_db->fetch_assoc($result);
@@ -46,13 +42,17 @@ if(isset($_GET['satquote'])) {
 			else if ($ends == '""')
 				$quote_info['poster'] = '\''.$quote_info['poster'].'\'';
 		}
-		$forum_page['quote'] = '[quote='.$quote_info['poster'].' post_id='.$qid.' time='.$quote_info['posted'].' user_id='.$quote_info['poster_id'].']'.$quote_info['message'].'[/quote]'."\n";
+		$forum_page['quote'] = '[quote='.$quote_info['poster'].']'.$quote_info['message'].'[/quote]'."\n";
 	}
 	else
 		$forum_page['quote'] = '> '.$quote_info['poster'].' '.$lang_common['wrote'].':'."\n\n".'> '.$quote_info['message']."\n";
 
 $forum_page['quote'] = preg_replace('/"/', '\"', $forum_page['quote']);
 $forum_page['quote'] = preg_replace('/\n/', '\\n', $forum_page['quote']);
-	echo '{"response":{"qid":"'.$qid.'","uid":"'.$quote_info['poster_id'].'","poster":"'.preg_replace('/"/', '\"', $quote_info['poster']).'","posted":"'.$quote_info['posted'].'","avatar":"'.$quote_info['avatar'].'","quote":"'.$forum_page['quote'].'"}}';
+	echo '{"response":{"qid":"'.$qid.'","uid":"'.$quote_info['poster_id'].'","posted":"'.$quote_info['posted'].'","quote":"'.$forum_page['quote'].'"}}';
 	exit;
+} else {
+	$query['SELECT'] .= ', p.poster_id, p.posted';
+	if(defined('SAT_MASK_START'))
+		$query['SELECT'] .= ', p.mask_name';
 }
